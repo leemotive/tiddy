@@ -62,7 +62,7 @@ defineExpose(
 );
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
 
 .el-form-item .el-form-item {
   margin-bottom: 18px;

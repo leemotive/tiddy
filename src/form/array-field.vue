@@ -140,12 +140,11 @@ onMounted(() => {
   }
 });
 </script>
-<style lang="scss" scoped>
+<style lang="css" scoped>
 .list-row {
   display: flex;
-
-  .row-item {
-    flex: 1;
-  }
+}
+.row-item {
+  flex: 1;
 }
 </style>
