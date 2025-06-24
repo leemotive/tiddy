@@ -1,6 +1,6 @@
 {
   "name": "tiddy",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "packageManager": "pnpm@10.11.0",
   "description": "A set of Vue 3 components based on element-plus",
   "type": "module",
@@ -14,9 +14,7 @@
     "url": "git+https://github.com/leemotive/tiddy.git"
   },
   "author": "leemotive <wstation@163.moe>",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

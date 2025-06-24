@@ -34,6 +34,9 @@ const fields: TdFormFieldProps[] = [
     itemMessageLabel: computed(() => t('labelSchool')),
     prop: 'school',
     component: markRaw(ElInput),
+    item: {
+      hideRequiredAsterisk: true,
+    },
     rules: [{ max: 5, required: true }],
   },
   {

@@ -70,7 +70,7 @@ export const widgetFieldPropsDef = {
     default: () => [],
   },
   item: {
-    type: Object as PropType<FormItemProps>,
+    type: Object as PropType<TdFormItemProps>,
     default: () => ({}),
   },
   widget: {
@@ -197,8 +197,14 @@ export const tdformItemProps = {
     type: Function as PropType<AnyFunction>,
     default: null,
   },
+  hideRequiredAsterisk: {
+    type: Boolean as PropType<boolean>,
+    default: false,
+  },
 }
 export const formItemPropsDef = {
   ...formItemProps,
   ...tdformItemProps,
 }
+
+export type TdFormItemProps = ExtractPublicPropTypes<typeof formItemPropsDef>;

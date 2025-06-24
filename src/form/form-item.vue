@@ -1,5 +1,5 @@
 <template>
-<ElFormItem ref="formItem" v-bind="itemAttr">
+<ElFormItem ref="formItem" :class="[{'hide-asterisk': hideRequiredAsterisk}]" v-bind="itemAttr">
   <template v-for="(_, k) in slots" :key="k" #[k]="scope">
     <slot v-bind="scope" :name="k"></slot>
   </template>
@@ -75,4 +75,12 @@ defineExpose(
 .el-form-item.layout-form-item {
   margin-bottom: 0;
 }
+
+.el-form-item.is-required.hide-asterisk.asterisk-left > :deep(.el-form-item__label)::before {
+  content: '';
+}
+.el-form-item.is-required.hide-asterisk.asterisk-right > :deep(.el-form-item__label)::after {
+  content: '';
+}
+
 </style>
