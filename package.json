@@ -1,6 +1,6 @@
 {
   "name": "tiddy",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "packageManager": "pnpm@10.11.0",
   "description": "A set of Vue 3 components based on element-plus",
   "type": "module",
@@ -20,7 +20,8 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": "./dist/index.js",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./*": "./dist/*"
   },
   "scripts": {
     "lint": "biome lint .",
