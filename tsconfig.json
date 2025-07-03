@@ -18,10 +18,14 @@
     "esModuleInterop": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      "tiddy/*": ["./src/*"]
+    }
   },
   "include": [
     "src",
-    "playground"
+    "playground",
+    "docs"
   ]
 }

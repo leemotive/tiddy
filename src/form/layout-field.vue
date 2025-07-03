@@ -19,6 +19,7 @@ import { computed, inject, useAttrs } from 'vue';
 import { getKey } from '../utils';
 import { formCtxKey, layoutFieldPropsDef, type FormContext, type TdFormFieldProps } from './utils';
 import DeepSlot from '../deep-slot/deep-slot.vue';
+import FormField from './form-field.vue';
 import { cut, ensureArray } from 'yatter';
 
 const props = defineProps(layoutFieldPropsDef);
