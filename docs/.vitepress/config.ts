@@ -30,6 +30,7 @@ const cssPlugin = {
 export default defineConfig({
   title: "Tiddy",
   description: "A set of Vue3 components based on element-plus",
+  base: '/tiddy/',
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
