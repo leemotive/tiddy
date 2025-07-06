@@ -29,7 +29,17 @@ import 'tiddy/index.css';
 
 ::: code-group
 ```ts [vite.config.ts]
-// TODO
+export default defineConfig({
+  optimizeDeps: {
+    exclude: ['tiddy']
+  },
+  plugins: [
+    ElementPlus({
+      include: ['**/*.vue', '**/*.ts', '**/*.js', '**/*.tsx', '**/*.jsx', '**/*.vue?vue&type=script', /tiddy/],
+      exclude: [/node_modules[\\/](?!.*tiddy.*)/, /[/\\]\.git[/\\]/, /[/\\]\.nuxt[/\\]/],
+    })
+  ]
+})
 
 ```
 :::
