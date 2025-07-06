@@ -9,7 +9,7 @@ import type {
   PropType,
   Raw,
 } from 'vue';
-import type { AnyFunction, GetSlotsFunction, OrArray, OrFunction, SlotDef } from '../types';
+import type { AnyFunction, GetSlotsFunction, MakeOptional, OrArray, OrFunction, SlotDef } from '../types';
 
 const fieldsPropsDef = {
   fields: {
@@ -34,7 +34,7 @@ const commonFieldPropsDef = {
     type: [Boolean, Function] as PropType<OrFunction<boolean>>,
   },
   label: {
-    type: [String, Function] as PropType<OrFunction<string> | ComputedRef<string>>,
+    type: [String, Function, Object] as PropType<OrFunction<string> | ComputedRef<string>>,
   },
   labelWidth: {
     type: [String, Number, Function] as PropType<OrFunction<string | number>>,
@@ -158,8 +158,8 @@ export const layoutFieldPropsDef = {
   ...fieldsPropsDef,
   ...commonFieldPropsDef,
 };
-export type TdLayoutFieldProps = TdFieldsProps &
-  ExtractPublicPropTypes<typeof layoutFieldPropsDef> &
+export type TdLayoutFieldProps = Partial<TdFieldsProps> &
+  MakeOptional<ExtractPublicPropTypes<typeof layoutFieldPropsDef>, "prop"> &
   AllowedComponentProps;
 
 export type TdFormFieldProps = TdObjectFieldProps | TdWidgetFieldProps | TdArrayFieldProps | TdLayoutFieldProps;
@@ -190,7 +190,7 @@ export type Writeable<T> = {
 
 export const tdformItemProps = {
   messageLabel: {
-    type: String as PropType<string>,
+    type: [String, Object] as PropType<string | ComputedRef<string>>,
     default: '',
   },
   formatMessage: {

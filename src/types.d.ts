@@ -2,8 +2,10 @@ import type { Component, Slot } from 'vue';
 
 export type OrArray<T> = T | T[];
 export type OrFunction<T> = T | ((...args: any[]) => T);
-export type AnyFunction<A extends unknown[] = unknown[], R = unknown> = (...args: A) => R;
+export type AnyFunction<A extends any[] = any[], R = any> = (...args: A) => R;
 export type OrUndef<T> = T | undefined;
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
 
 export interface ComponentSlot {
   name: string;

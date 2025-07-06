@@ -19,7 +19,7 @@ const props = defineProps(dialogPropsDef);
 const propsFromApi = ref({});
 const visible = ref(false);
 
-const waiting = {} as PromiseWithResolvers<{ close: AnyFunction }>;
+const waiting = {} as PromiseWithResolvers<any>;
 const dialogRef = useTemplateRef('dialog');
 const subProps = computed<any>(() => ({ ...props, ...propsFromApi.value }));
 
@@ -27,9 +27,13 @@ const slots: Slots = useSlots();
 
 const slotNames = computed(() => Object.keys(slots));
 
-async function open(options: TdDialogProps = {}) {
+function open(options: TdDialogProps = {}) {
   propsFromApi.value = options;
   visible.value = true;
+  Object.assign(waiting, Promise.withResolvers());
+  return { promise: waiting.promise, close };
+}
+function wait() {
   Object.assign(waiting, Promise.withResolvers());
   return waiting.promise;
 }
@@ -42,18 +46,19 @@ function close() {
 async function confirm(instance?: FormInstance) {
   await instance?.validate?.();
   visible.value = false;
-  waiting.resolve({ close });
+  waiting.resolve(null);
 }
 
 async function step(instance?: FormInstance) {
   await instance?.validate?.();
-  waiting.resolve({ close });
+  waiting.resolve(null);
 }
 
 defineExpose(
   new Proxy(
     {
       open,
+      wait,
       close,
     } as Record<PropertyKey, any>,
     {

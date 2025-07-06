@@ -1,11 +1,11 @@
 {
   "name": "tiddy",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "packageManager": "pnpm@10.11.0",
   "description": "A set of Vue 3 components based on element-plus",
   "type": "module",
   "license": "MIT",
-  "homepage": "https://github.com/leemotive/tiddy#readme",
+  "homepage": "https://leemotive.github.io/tiddy/",
   "bugs": {
     "url": "https://github.com/leemotive/tiddy/issues"
   },
@@ -13,7 +13,7 @@
     "type": "git",
     "url": "git+https://github.com/leemotive/tiddy.git"
   },
-  "author": "leemotive <wstation@163.moe>",
+  "author": "leemotive <wstation@163.com>",
   "files": ["dist"],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -46,6 +46,7 @@
     "@vitejs/plugin-vue": "^5.2.4",
     "@vue/test-utils": "^2.4.6",
     "async-validator": "^4.2.5",
+    "decimal-format": "^4.0.3",
     "element-plus": "^2.9.11",
     "happy-dom": "^17.4.7",
     "sass-embedded": "^1.89.1",

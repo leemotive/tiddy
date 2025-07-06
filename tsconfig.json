@@ -2,14 +2,15 @@
   "compilerOptions": {
     "target": "esnext",
     "lib": [
-      "es2024"
+      "es2024",
+      "DOM"
     ],
     "moduleDetection": "force",
     "module": "preserve",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "types": [
-      "node"
+      "node",
     ],
     "strict": true,
     "noUnusedLocals": true,

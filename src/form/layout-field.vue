@@ -1,7 +1,7 @@
 <template>
 <div class="layout-item" v-bind="layoutProps">
   <DeepSlot
-    v-for="psc in layoutSlots"
+    v-for="psc in prefixSlots"
     :key="psc.name"
     v-bind="psc"
     :ctx-key="formCtxKey"
@@ -10,6 +10,12 @@
     v-for="field in subFields"
     :key="getKey(field)"
     v-bind="field"
+  />
+  <DeepSlot
+    v-for="psc in suffixSlots"
+    :key="psc.name"
+    v-bind="psc"
+    :ctx-key="formCtxKey"
   />
 </div>
 </template>
@@ -20,7 +26,7 @@ import { getKey } from '../utils';
 import { formCtxKey, layoutFieldPropsDef, type FormContext, type TdFormFieldProps } from './utils';
 import DeepSlot from '../deep-slot/deep-slot.vue';
 import FormField from './form-field.vue';
-import { cut, ensureArray } from 'yatter';
+import { cut, ensureArray, groupBy } from 'yatter';
 
 const props = defineProps(layoutFieldPropsDef);
 const attrs = useAttrs();
@@ -41,6 +47,10 @@ const subFields = computed(() => {
 });
 
 const layoutSlots = formCtx.getParentSlots(ensureArray(props.slots));
+const { prefix: prefixSlots, suffix: suffixSlots } = groupBy(
+  layoutSlots,
+  (slot) => slot.name.match(/^[a-z]+/i)?.[0] ?? '',
+);
 </script>
 <style lang="scss" scoped>
 </style>
