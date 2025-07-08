@@ -14,12 +14,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, h, markRaw, ref } from 'vue';
-import { type TdFormFieldProps, TdForm } from '../../src';
+import { computed, h, markRaw, ref, useTemplateRef } from 'vue';
+import { type TdFormFieldProps, type TdFormInstance, TdForm } from '../../src';
 import { useI18n } from 'vue-i18n';
 import { ElInput, ElOption, ElSelect, ElSwitch, ElButton } from 'element-plus';
 
 const { t } = useI18n();
+
+const formRef = useTemplateRef<TdFormInstance>('formRef');
 
 const cardOptions = [
   { label: '身份证', value: 'id' },

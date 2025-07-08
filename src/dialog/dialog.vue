@@ -7,13 +7,24 @@
 </template>
 <script setup lang="ts">
 import { ref, computed, useSlots, type Slots, useTemplateRef } from 'vue';
-import { ElDialog, type FormInstance } from 'element-plus';
+import { ElDialog, type DialogInstance, type FormInstance } from 'element-plus';
 import { dialogPropsDef, type TdDialogProps } from './utils';
-import type { AnyFunction } from '../types';
 
 defineOptions({
   name: 'TdDialog',
 });
+type DialogSlots = DialogInstance['$slots'] extends Slots & infer T ? T : never;
+type SlotFun = {
+  ok: typeof confirm;
+  close: typeof close;
+  step: typeof step;
+};
+type ExFun<T> = Exclude<T, undefined>;
+type TdDialogSlots = {
+  [K in keyof DialogSlots]?: (props: Parameters<ExFun<DialogSlots[K]>>[0] & SlotFun) => any;
+};
+
+defineSlots<TdDialogSlots>();
 
 const props = defineProps(dialogPropsDef);
 const propsFromApi = ref({});
@@ -25,7 +36,8 @@ const subProps = computed<any>(() => ({ ...props, ...propsFromApi.value }));
 
 const slots: Slots = useSlots();
 
-const slotNames = computed(() => Object.keys(slots));
+// 这里的as就是为了上面的动态slot不报错
+const slotNames = computed(() => Object.keys(slots) as ['footer']);
 
 function open(options: TdDialogProps = {}) {
   propsFromApi.value = options;
@@ -53,23 +65,20 @@ async function step(instance?: FormInstance) {
   await instance?.validate?.();
   waiting.resolve(null);
 }
-
+const expose = {
+  open,
+  wait,
+  close,
+};
 defineExpose(
-  new Proxy(
-    {
-      open,
-      wait,
-      close,
-    } as Record<PropertyKey, any>,
-    {
-      get(target, key) {
-        return target[key] || Reflect.get(dialogRef.value || {}, key);
-      },
-      has(target, key) {
-        return Object.hasOwn(target, key) || Reflect.has(dialogRef.value || {}, key);
-      },
+  new Proxy(expose, {
+    get(target, key) {
+      return Reflect.get(target, key) || Reflect.get(dialogRef.value || {}, key);
     },
-  ),
+    has(target, key) {
+      return Object.hasOwn(target, key) || Reflect.has(dialogRef.value || {}, key);
+    },
+  }),
 );
 </script>
 <style lang="scss" scoped></style>

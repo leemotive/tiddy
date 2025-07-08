@@ -3,7 +3,7 @@
   <TdDialog ref="dialog" title="标题" :show-close="false">
     <div>内容</div>
     <template #footer="scope">
-      <ElButton type="primary" @click="scope.step">确定</ElButton>
+      <ElButton type="primary" @click="scope.step()">确定</ElButton>
     </template>
   </TdDialog>
 </template>

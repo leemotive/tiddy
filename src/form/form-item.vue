@@ -10,25 +10,26 @@
 </template>
 
 <script setup lang="ts">
-import { ElFormItem, useNamespace } from 'element-plus';
+import { ElFormItem, useNamespace, type FormItemInstance } from 'element-plus';
 import { computed, isRef, unref, useSlots, useTemplateRef, type Slots } from 'vue';
 import { cut } from 'yatter';
-import { formItemPropsDef, tdformItemProps, type Writeable } from './utils';
+import { formItemPropsDef, tdformItemProps } from './utils';
 
 const ns = useNamespace('form-item');
 const props = defineProps(formItemPropsDef);
 
 const itemAttr = computed(() => {
-  const attrs: Writeable<Partial<typeof props>> = cut(props, Object.keys(tdformItemProps));
+  const attrs = cut(props, Object.keys(tdformItemProps));
+
   for (const [k, v] of Object.entries(attrs)) {
     if (isRef<any>(v)) {
-      attrs[k as keyof typeof attrs] = v.value;
+      Reflect.set(attrs, k, v.value);
     }
   }
   return attrs;
 });
 
-const formItemRef = useTemplateRef('formItem');
+const formItemRef = useTemplateRef<FormItemInstance>('formItem');
 const slots: Slots = useSlots();
 const validateClass = ns.e('error');
 

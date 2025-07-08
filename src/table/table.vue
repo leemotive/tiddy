@@ -32,16 +32,15 @@ provide(tableCtxKey, {
   getParentSlots: getSlotsFactory(slots),
 });
 
-
 defineExpose(
   new Proxy(
-    {} as Record<PropertyKey, any>,
+    {},
     {
       get(target, key) {
-        return target[key] || Reflect.get(tableRef.value || {}, key);
+        return Reflect.get(tableRef.value || {}, key);
       },
       has(target, key) {
-        return Object.hasOwn(target, key) || Reflect.has(tableRef.value || {}, key);
+        return Reflect.has(tableRef.value || {}, key);
       },
     },
   ),

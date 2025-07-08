@@ -2,7 +2,7 @@
   <ElForm ref="form" v-bind="subProps" @submit.prevent="submit">
     <slot name="prefix" />
     <slot>
-      <FormField v-for="field in fields" v-bind="field" />
+      <FormField v-for="field in fields" :key="getKey(field)" v-bind="field" />
     </slot>
     <slot name="suffix" />
   </ElForm>
@@ -13,7 +13,7 @@ import { ElForm, formProps, type FormInstance, type FormEmits, type FormItemProp
 import { computed, provide, useSlots, useTemplateRef } from 'vue';
 import FormField from './form-field.vue';
 import { formCtxKey, formPropsDef } from './utils';
-import { getSlotsFactory } from '../utils';
+import { getKey, getSlotsFactory } from '../utils';
 import { cut } from 'yatter';
 
 const formRef = useTemplateRef<FormInstance>('form');
@@ -51,14 +51,14 @@ function reValidateErrorFields() {
   }
 }
 
-const expose: any = {
+const expose = {
   reValidateErrorFields,
   model: computed(() => props.model),
 };
 defineExpose(
   new Proxy(expose, {
     get(target, key) {
-      return target[key] || Reflect.get(formRef.value || {}, key);
+      return Reflect.get(target, key) || Reflect.get(formRef.value || {}, key);
     },
     has(target, key) {
       return Object.hasOwn(target, key) || Reflect.has(formRef.value || {}, key);

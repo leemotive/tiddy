@@ -4,7 +4,7 @@
     <div>内容</div>
     <template #footer="scope">
       <ElButton type="default" @click="scope.close">取消</ElButton>
-      <ElButton type="primary" @click="scope.ok">确定</ElButton>
+      <ElButton type="primary" @click="scope.ok()">确定</ElButton>
     </template>
   </TdDialog>
 </template>
