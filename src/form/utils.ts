@@ -1,15 +1,17 @@
 import { formItemProps, type FormItemProps, type FormItemRule, type FormProps } from 'element-plus';
-import type {
-  AllowedComponentProps,
-  Component,
-  ComputedRef,
-  CSSProperties,
-  ExtractPublicPropTypes,
-  InjectionKey,
-  PropType,
-  Raw,
+import {
+  isRef,
+  type AllowedComponentProps,
+  type Component,
+  type ComputedRef,
+  type CSSProperties,
+  type ExtractPublicPropTypes,
+  type InjectionKey,
+  type PropType,
+  type Raw,
 } from 'vue';
 import type { AnyFunction, GetSlotsFunction, MakeOptional, OrArray, OrFunction, SlotDef } from '../types';
+import { isFunction } from 'yatter';
 
 const fieldsPropsDef = {
   fields: {
@@ -27,11 +29,8 @@ const commonFieldPropsDef = {
     required: true as const,
   },
   hide: {
-    type: [Boolean, Object] as PropType<boolean | ComputedRef>,
+    type: [Boolean, Function, Object] as PropType<OrFunction<boolean> | ComputedRef>,
     default: false,
-  },
-  hideLabel: {
-    type: [Boolean, Function] as PropType<OrFunction<boolean>>,
   },
   label: {
     type: [String, Function, Object] as PropType<OrFunction<string> | ComputedRef<string>>,
@@ -114,6 +113,9 @@ export const arrayFieldPropsDef = {
     type: String as PropType<'array'>,
     default: 'array',
     required: true as const,
+  },
+  hideLabel: {
+    type: [Boolean, Function, Object] as PropType<OrFunction<boolean> | ComputedRef>,
   },
   rawValue: {
     type: Function as PropType<AnyFunction>,
@@ -208,3 +210,13 @@ export const formItemPropsDef = {
 }
 
 export type TdFormItemProps = ExtractPublicPropTypes<typeof formItemPropsDef>;
+
+export function isLabelHidden(hideLabel?: OrFunction<boolean> | ComputedRef): boolean {
+  if (isFunction(hideLabel)) {
+    return hideLabel();
+  }
+  if (isRef(hideLabel)) {
+    return hideLabel.value;
+  }
+  return !!hideLabel;
+}

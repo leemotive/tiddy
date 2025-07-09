@@ -2,18 +2,31 @@
 <component :is="FieldComponents" v-bind="attrs" :full-prop="fullProp" />
 </template>
 <script setup lang="ts">
-import { computed, Fragment, useAttrs } from 'vue';
+import { computed, Fragment, isRef, useAttrs } from 'vue';
 import ObjectField from './object-field.vue';
 import WidgetField from './widget-field.vue';
 import ArrayField from './array-field.vue';
 import LayoutField from './layout-field.vue';
+import { isFunction } from 'yatter';
 
 const attrs = useAttrs();
 
 const fullProp = computed(() => attrs['full-prop'] || attrs.prop);
 
+function isHidden() {
+  if (attrs.hide === true) {
+    return true;
+  }
+  if (isFunction(attrs.hide)) {
+    return attrs.hide(attrs);
+  }
+  if (isRef(attrs.hide)) {
+    return attrs.hide.value;
+  }
+  return false;
+}
 const FieldComponents = computed(() => {
-  if (attrs.hide) {
+  if (isHidden()) {
     return Fragment;
   }
   if (attrs.type === 'array') {

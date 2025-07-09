@@ -18,7 +18,7 @@ const fields: TdFormFieldProps[] = [
     label: '姓名',
     prop: 'name',
     component: ElInput,
-    rules: [{ required: true }],
+    rules: [{ min: 2, max: 10 }],
   },
   {
     label: '编号',
