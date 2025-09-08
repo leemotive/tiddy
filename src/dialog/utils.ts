@@ -6,4 +6,4 @@ export const dialogPropsDef = {
   ...cut(dialogProps, ['modelValue'])
 }
 
-export type TdDialogProps = ExtractPublicPropTypes<typeof dialogPropsDef>;
+export type TdDialogProps = ExtractPublicPropTypes<Omit<typeof dialogProps, "modelValue">>;

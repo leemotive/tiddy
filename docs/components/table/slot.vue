@@ -3,6 +3,9 @@
     <template #status_default="{ row }">
       <ElTag :type="row.status === '在职' ? 'primary': 'danger'">{{ row.status }}</ElTag>
     </template>
+    <template #age_default="{ row }">
+      {{row.age}}岁
+    </template>
   </TdTable>
 </template>
 <script setup lang="ts">

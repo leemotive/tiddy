@@ -1,8 +1,8 @@
 import type { Slots } from 'vue';
 import { isObject, uid } from 'yatter';
-import type { SlotDef } from '../types';
+import type { GetSlotsFunction, SlotDef } from '../types';
 
-export function getSlotsFactory(slots: Slots) {
+export function getSlotsFactory(slots: Slots): GetSlotsFunction {
   return (names: SlotDef[]) =>
     names.flatMap((name) => {
       if (typeof name === 'string') {
@@ -17,6 +17,21 @@ export function getSlotsFactory(slots: Slots) {
           ];
         }
         return [];
+      }
+      if (name instanceof RegExp) {
+        const slotNames = Object.keys(slots);
+        return slotNames.flatMap(slotName => {
+          if (name.test(slotName)) {
+            return [
+              {
+                name: slotName.replace(/[\w-]+?_/, ''),
+                component: slots[slotName],
+                slot: true,
+              }
+            ]
+          }
+          return []
+        })
       }
       return [name];
     });

@@ -16,5 +16,5 @@ export interface ComponentSlot {
   isSlot?: boolean;
 }
 
-export type SlotDef = ComponentSlot | string;
+export type SlotDef = ComponentSlot | string | RegExp;
 export type GetSlotsFunction = (names: SlotDef[]) => ComponentSlot[];

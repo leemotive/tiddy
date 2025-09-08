@@ -14,9 +14,9 @@
 <script setup lang="ts">
 import { ElTableColumn } from 'element-plus';
 import DeepSlot from '../deep-slot/deep-slot.vue';
-import {tableColumnPropsDef, tableCtxKey, type TableContext} from './utils';
+import { tableColumnPropsDef, tableCtxKey, type TableContext } from './utils';
 import { computed, inject } from 'vue';
-import { cut, ensureArray, getDeepValue } from 'yatter';
+import { cut, ensureArray, getDeepValue, toKebabCase } from 'yatter';
 
 defineOptions({
   name: 'TdTableCol',
@@ -34,8 +34,11 @@ function filtered(scope: any) {
 }
 
 const tableCtx = inject<TableContext>(tableCtxKey)!;
-const columnSlots = tableCtx.getParentSlots(ensureArray(props.slots));
-
+const columnSlots = tableCtx.getParentSlots(
+  !ensureArray(props.slots).length && props.prop
+    ? [new RegExp(`^${toKebabCase(props.prop)}`)]
+    : ensureArray(props.slots),
+);
 </script>
 <style lang="scss" scoped>
 </style>
