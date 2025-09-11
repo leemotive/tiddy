@@ -21,6 +21,9 @@ import {TdTable, type TdTableColumnProps} from 'tiddy';
 ## 基础用法
 <demo vue="table.vue" />
 
+## 事件
+<demo vue="events.vue" />
+
 ## 表头嵌套
 <demo vue="nest.vue" />
 

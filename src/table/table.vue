@@ -1,6 +1,6 @@
 <template>
   <slot name="before"></slot>
-  <ElTable ref="tableRef" :data="data" v-bind="subProps">
+  <ElTable ref="tableRef" :data="data" v-bind="{...$attrs, ...subProps}">
     <TableCol v-for="col in columns" :key="col.label" v-bind="col" />
     <template v-for="name in slotNames" :key="name" #[name]="scope">
       <slot v-bind="scope" :name="name"></slot>
