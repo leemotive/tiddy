@@ -6,15 +6,25 @@
     <ElOption label="英语" value="english" />
     <ElOption label="物理" value="physics" />
   </template>
+  <template #category_default>
+    <ElRadio value="a">A</ElRadio>
+    <ElRadio value="b">B</ElRadio>
+  </template>
 </TdForm>
 </template>
 <script setup lang="ts">
 import { TdForm, type TdFormFieldProps } from 'tiddy';
 import { ref, h } from 'vue';
-import { ElSelect, ElOption } from 'element-plus';
+import { ElSelect, ElOption, ElRadioGroup, ElRadio } from 'element-plus';
 
 const data = ref({});
 const fields: TdFormFieldProps[] = [
+  {
+    type: 'widget',
+    label: '分类',
+    prop: 'category',
+    component: ElRadioGroup,
+  },
   {
     type: 'widget',
     label: '科目',

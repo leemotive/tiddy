@@ -35,6 +35,7 @@ import { resolveWidget } from './widget';
 import { computed, inject, shallowRef, useAttrs } from 'vue';
 import { ensureArray, getDeepValue, isNullOrUndef, pick, setDeepValue, toCamelCase } from 'yatter';
 import DeepSlot from '../deep-slot/deep-slot.vue';
+import { resolveSlotNames } from 'tiddy/utils';
 
 const props = defineProps(widgetFieldPropsDef);
 const attrs = useAttrs();
@@ -92,7 +93,7 @@ const widgetAttrs = computed(() => {
   return { ...attr4Widget, ...props.widget };
 });
 
-const widgetSlots = formCtx.getParentSlots(ensureArray(props.slots));
+const widgetSlots = formCtx.getParentSlots(resolveSlotNames(props.slots, <string>props.prop));
 const formItemSlots = formCtx.getParentSlots(ensureArray(props.itemSlots));
 
 const beforeSlots = formCtx.getParentSlots(ensureArray(props.prependSlots));

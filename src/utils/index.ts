@@ -1,5 +1,5 @@
 import type { Slots } from 'vue';
-import { isObject, uid } from 'yatter';
+import { ensureArray, isObject, toKebabCase, uid } from 'yatter';
 import type { GetSlotsFunction, SlotDef } from '../types';
 
 export function getSlotsFactory(slots: Slots): GetSlotsFunction {
@@ -35,6 +35,15 @@ export function getSlotsFactory(slots: Slots): GetSlotsFunction {
       }
       return [name];
     });
+}
+
+export function resolveSlotNames(names: any, prop?: string, type?: string) {
+  const nameArr = ensureArray(names);
+  if (!nameArr.length && prop) {
+    const name = type ? `${prop}-${type}` : prop;
+    return [new RegExp(`^${toKebabCase(name)}_`)];
+  }
+  return nameArr;
 }
 
 const keys = new WeakMap<WeakKey, string>();
