@@ -5,6 +5,9 @@
 ## 基础用法
 <demo vue="open.vue" />
 
+## 区分按钮
+<demo vue="result.vue" />
+
 ## 内嵌表单
 <demo vue="form.vue" />
 

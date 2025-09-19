@@ -1,5 +1,5 @@
 <template>
-<ElDialog ref="dialog" v-bind="subProps" :model-value="visible" @close="close">
+<ElDialog ref="dialog" v-bind="subProps" :model-value="visible" @close="close('close')">
   <template v-for="name in slotNames" :key="name" #[name]="scope">
     <slot :name="name" v-bind="scope" :ok="confirm" :close="close" :step="step" />
   </template>
@@ -50,20 +50,20 @@ function wait() {
   return waiting.promise;
 }
 
-function close() {
+function close(err?: any) {
   visible.value = false;
-  waiting.reject();
+  waiting.reject(err);
 }
 
-async function confirm(instance?: FormInstance) {
+async function confirm(res?: any, instance?: FormInstance) {
   await instance?.validate?.();
   visible.value = false;
-  waiting.resolve(null);
+  waiting.resolve(res);
 }
 
-async function step(instance?: FormInstance) {
+async function step(res?: any, instance?: FormInstance) {
   await instance?.validate?.();
-  waiting.resolve(null);
+  waiting.resolve(res);
 }
 const expose = {
   open,
