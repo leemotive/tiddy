@@ -33,7 +33,7 @@ import { formCtxKey, widgetFieldPropsDef, type FormContext } from './utils';
 import TdFormItem from './form-item.vue';
 import { resolveWidget } from './widget';
 import { computed, inject, shallowRef, useAttrs } from 'vue';
-import { ensureArray, getDeepValue, isNullOrUndef, pick, setDeepValue, toCamelCase } from 'yatter';
+import { getDeepValue, isNullOrUndef, pick, setDeepValue, toCamelCase } from 'yatter';
 import DeepSlot from '../deep-slot/deep-slot.vue';
 import { resolveSlotNames } from 'tiddy/utils';
 
@@ -94,10 +94,10 @@ const widgetAttrs = computed(() => {
 });
 
 const widgetSlots = formCtx.getParentSlots(resolveSlotNames(props.slots, <string>props.prop));
-const formItemSlots = formCtx.getParentSlots(ensureArray(props.itemSlots));
+const formItemSlots = formCtx.getParentSlots(resolveSlotNames(props.itemSlots, <string>props.prop, 'item'));
 
-const beforeSlots = formCtx.getParentSlots(ensureArray(props.prependSlots));
-const afterSlots = formCtx.getParentSlots(ensureArray(props.appendSlots));
+const beforeSlots = formCtx.getParentSlots(resolveSlotNames(props.prependSlots, <string>props.prop, 'prepend'));
+const afterSlots = formCtx.getParentSlots(resolveSlotNames(props.appendSlots, <string>props.prop, 'append'));
 </script>
 
 <style lang="scss" scoped></style>

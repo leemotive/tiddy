@@ -13,7 +13,7 @@ export const tableCtxKey: InjectionKey<TableContext> = Symbol('tableCtxKey');
 export const tableColumnPropsDef = {
   slots: {
     type: [Array, Object] as PropType<OrArray<SlotDef>>,
-    default: () => [],
+    default: () => null,
   },
   columns: {
     type: Array as PropType<any[]>,

@@ -48,7 +48,7 @@ import TdFormItem from './form-item.vue';
 import { arrayFieldPropsDef, formCtxKey, isLabelHidden, type FormContext, type Writeable } from './utils';
 import { computed, inject, onMounted, useAttrs } from 'vue';
 import { cut, getDeepValue, isFunction, isNullOrUndef, pick, setDeepValue } from 'yatter';
-import { getKey } from '../utils';
+import { getKey, resolveSlotNames } from '../utils';
 import FormField from './form-field.vue';
 import type { OrFunction } from '../types';
 
@@ -64,9 +64,11 @@ const fieldProps = computed(() => {
 
 const formCtx = inject<FormContext>(formCtxKey)!;
 
-const OuterEmptySlot = formCtx.getParentSlots([props.outerEmptyAction])[0];
-const EmptySlot = formCtx.getParentSlots([props.emptyAction])[0];
-const RowSlot = formCtx.getParentSlots([props.rowAction])[0];
+const OuterEmptySlot = formCtx.getParentSlots(
+  resolveSlotNames(props.outerEmptyAction ?? `${props.prop}-action_outer`),
+)[0];
+const EmptySlot = formCtx.getParentSlots(resolveSlotNames(props.emptyAction ?? `${props.prop}-action_empty`))[0];
+const RowSlot = formCtx.getParentSlots(resolveSlotNames(props.rowAction ?? `${props.prop}-action_row`))[0];
 
 const parentFullProp = computed(() => (attrs['full-prop'] as string) || '');
 

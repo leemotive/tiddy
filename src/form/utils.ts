@@ -86,19 +86,19 @@ export const widgetFieldPropsDef = {
   },
   slots: {
     type: [Array, Object] as PropType<OrArray<SlotDef>>,
-    default: () => [],
+    default: () => null,
   },
   prependSlots: {
     type: [Array, Object] as PropType<OrArray<SlotDef>>,
-    default: () => [],
+    default: () => null,
   },
   appendSlots: {
     type: [Array, Object] as PropType<OrArray<SlotDef>>,
-    default: () => [],
+    default: () => null,
   },
   itemSlots: {
     type: [Array, Object] as PropType<OrArray<SlotDef>>,
-    default: () => [],
+    default: () => null,
   },
   default: {
     type: [String, Number, Boolean, Array, Object] as PropType<any>,
@@ -122,15 +122,15 @@ export const arrayFieldPropsDef = {
   },
   outerEmptyAction: {
     type: String,
-    default: 'outer_empty_action',
+    default: null,
   },
   emptyAction: {
     type: String,
-    default: 'empty_action',
+    default: null,
   },
   rowAction: {
     type: String,
-    default: 'row_action',
+    default: null,
   },
   lineStyle: {
     type: Object as PropType<CSSProperties>,

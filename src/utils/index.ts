@@ -38,12 +38,8 @@ export function getSlotsFactory(slots: Slots): GetSlotsFunction {
 }
 
 export function resolveSlotNames(names: any, prop?: string, type?: string) {
-  const nameArr = ensureArray(names);
-  if (!nameArr.length && prop) {
-    const name = type ? `${prop}-${type}` : prop;
-    return [new RegExp(`^${toKebabCase(name)}_`)];
-  }
-  return nameArr;
+  const propReg = prop ? new RegExp(`^${toKebabCase([prop, type].filter(Boolean).join('-'))}_`) : undefined;
+  return ensureArray(names ?? propReg);
 }
 
 const keys = new WeakMap<WeakKey, string>();
