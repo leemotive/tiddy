@@ -42,13 +42,13 @@ const attrs = useAttrs();
 
 const formCtx = inject<FormContext>(formCtxKey)!;
 
-const tempValue = shallowRef(getDeepValue(formCtx.model, attrs['full-prop'] as string));
+const tempValue = shallowRef(props.formatter(getDeepValue(formCtx.model, attrs['full-prop'] as string)));
 const widgetModel = computed({
   get() {
     if (props.modifiers.includes('lazy')) {
       return tempValue.value;
     }
-    return getDeepValue(formCtx.model, attrs['full-prop'] as string);
+    return props.formatter(getDeepValue(formCtx.model, attrs['full-prop'] as string));
   },
   set(v) {
     if (props.modifiers.includes('lazy')) {
@@ -77,12 +77,13 @@ function onModelChange(...args: any[]) {
 }
 
 function updateModelValue(v: any) {
+  const parsed = props.parser(v);
   if (props.modifiers.includes('trim')) {
-    setDeepValue(formCtx.model, attrs['full-prop'] as string, (v as string).trim());
+    setDeepValue(formCtx.model, attrs['full-prop'] as string, (parsed as string).trim());
   } else if (props.modifiers.includes('number')) {
-    setDeepValue(formCtx.model, attrs['full-prop'] as string, Number(v));
+    setDeepValue(formCtx.model, attrs['full-prop'] as string, Number(parsed));
   } else {
-    setDeepValue(formCtx.model, attrs['full-prop'] as string, v);
+    setDeepValue(formCtx.model, attrs['full-prop'] as string, parsed);
   }
 }
 

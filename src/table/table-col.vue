@@ -7,7 +7,7 @@
       <DeepSlot v-bind="sc" :scope="scope" :ctx-key="tableCtxKey" />
     </template>
     <template v-if="transform.length" #default="scope">
-      {{ filtered(scope) }}
+      <div v-html="filtered(scope)" />
     </template>
   </ElTableColumn>
 </template>

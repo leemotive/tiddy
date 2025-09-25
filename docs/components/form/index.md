@@ -58,6 +58,9 @@ const fields: TdFormFieldProps[] = [];
 ## 数组结构
 <demo vue="array.vue" />
 
+## 数据转换
+<demo vue="format.vue" />
+
 ## 布局类
 <demo vue="layout.vue" />
 

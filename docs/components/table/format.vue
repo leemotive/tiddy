@@ -35,6 +35,7 @@ const columns: TdTableColumnProps[] = [
     prop: 'education',
     label: '学历',
     width: 120,
+    transform: [(v) => `${v}<br />毕业`],
   },
   {
     prop: 'address',

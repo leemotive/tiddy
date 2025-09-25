@@ -68,6 +68,14 @@ export const widgetFieldPropsDef = {
     type: Array as PropType<Array<'lazy' | 'number' | 'trim'>>,
     default: () => [],
   },
+  parser: {
+    type: Function as PropType<AnyFunction>,
+    default: (value: any) => value,
+  },
+  formatter: {
+    type: Function as PropType<AnyFunction>,
+    default: (value: any) => value,
+  },
   item: {
     type: Object as PropType<TdFormItemProps>,
     default: () => ({}),
