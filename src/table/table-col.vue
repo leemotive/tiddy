@@ -31,7 +31,7 @@ const colProps = computed(() => {
 
 function filtered(scope: any) {
   const { row, column } = scope;
-  return props.transform.reduce<any>((res, filter) => filter(res), getDeepValue(row, column.property));
+  return props.transform.reduce<any>((res, filter) => filter(res, row, column), getDeepValue(row, column.property));
 }
 
 const tableCtx = inject<TableContext>(tableCtxKey)!;
