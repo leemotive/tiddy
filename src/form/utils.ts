@@ -61,7 +61,7 @@ export const widgetFieldPropsDef = {
     default: 'widget',
   },
   component: {
-    type: [String, Object] as PropType<string | Component | Raw<Component>>,
+    type: [String, Object, Function] as PropType<string | Component | Raw<Component>>,
     required: true,
   },
   modifiers: {

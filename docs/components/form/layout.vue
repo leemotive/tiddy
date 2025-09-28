@@ -11,6 +11,7 @@ const model = ref({});
 const fields: TdFormFieldProps[] = [
   {
     type: 'layout',
+    prop: '',
     slots: [
       {
         name: 'prefix',

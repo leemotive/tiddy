@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import { ElForm, formProps, type FormInstance, type FormEmits, type FormItemProps } from 'element-plus';
-import { computed, provide, useSlots, useTemplateRef } from 'vue';
+import { computed, provide, reactive, toRef, useSlots, useTemplateRef } from 'vue';
 import FormField from './form-field.vue';
 import { formCtxKey, formPropsDef } from './utils';
 import { getKey, getSlotsFactory } from '../utils';
@@ -37,11 +37,14 @@ async function submit() {
   emit('submit', props.model);
 }
 
-provide(formCtxKey, {
-  model: props.model,
-  itemOption: props.item as FormItemProps,
-  getParentSlots: getSlotsFactory(slots),
-});
+provide(
+  formCtxKey,
+  reactive({
+    model: toRef(props, 'model'),
+    itemOption: props.item as FormItemProps,
+    getParentSlots: getSlotsFactory(slots),
+  }),
+);
 
 function reValidateErrorFields() {
   for (const field of formRef.value?.fields ?? []) {
