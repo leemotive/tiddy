@@ -7,12 +7,13 @@
     :scope="{ value: widgetModel }"
     :ctx-key="formCtxKey"
   />
-
-  <Widget v-bind="widgetAttrs" v-on="on" v-model="widgetModel" class="widget-component" @blur="onModelChange">
-    <template v-for="sc in widgetSlots" :key="sc.name" #[sc.name]="scope">
-      <DeepSlot v-bind="sc" :scope="scope" :ctx-key="formCtxKey" />
-    </template>
-  </Widget>
+  <template v-if="!!Widget">
+    <Widget v-bind="widgetAttrs" v-on="on" v-model="widgetModel" class="widget-component" @blur="onModelChange">
+      <template v-for="sc in widgetSlots" :key="sc.name" #[sc.name]="scope">
+        <DeepSlot v-bind="sc" :scope="scope" :ctx-key="formCtxKey" />
+      </template>
+    </Widget>
+  </template>
 
   <DeepSlot
     v-for="ssc in afterSlots"
@@ -35,7 +36,7 @@ import { resolveWidget } from './widget';
 import { computed, inject, shallowRef, useAttrs } from 'vue';
 import { getDeepValue, isNullOrUndef, pick, setDeepValue, toCamelCase } from 'yatter';
 import DeepSlot from '../deep-slot/deep-slot.vue';
-import { resolveSlotNames } from 'tiddy/utils';
+import { resolveSlotNames } from '../utils';
 
 const props = defineProps(widgetFieldPropsDef);
 const attrs = useAttrs();

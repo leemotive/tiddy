@@ -1,5 +1,5 @@
 <template>
-  <ElTableColumn v-bind="colProps">
+  <ElTableColumn v-bind="$attrs">
     <template v-if="columns.length">
       <TdTableCol v-for="col in columns" :key="col.label" v-bind="col" />
     </template>
@@ -15,19 +15,16 @@
 import { ElTableColumn } from 'element-plus';
 import DeepSlot from '../deep-slot/deep-slot.vue';
 import { tableColumnPropsDef, tableCtxKey, type TableContext } from './utils';
-import { computed, inject } from 'vue';
-import { cut, getDeepValue } from 'yatter';
-import { resolveSlotNames } from 'tiddy/utils';
+import { inject, useAttrs } from 'vue';
+import { getDeepValue } from 'yatter';
+import { resolveSlotNames } from '../utils';
 
 defineOptions({
   name: 'TdTableCol',
 });
 
 const props = defineProps(tableColumnPropsDef);
-
-const colProps = computed(() => {
-  return cut(props, ['transform', 'columns', 'slots']);
-});
+const attrs = useAttrs();
 
 function filtered(scope: any) {
   const { row, column } = scope;
@@ -35,7 +32,7 @@ function filtered(scope: any) {
 }
 
 const tableCtx = inject<TableContext>(tableCtxKey)!;
-const columnSlots = tableCtx.getParentSlots(resolveSlotNames(props.slots, props.prop));
+const columnSlots = tableCtx.getParentSlots(resolveSlotNames(props.slots, attrs.prop as string));
 </script>
 <style lang="scss" scoped>
 </style>

@@ -1,7 +1,7 @@
 <template>
   <TdForm ref="formRef" :fields="fields" :model="model" label-width="120">
     <template #prefix>{{ model }}</template>
-    <template #outer_empty_action="scope">
+    <template #contacts-action_empty="scope">
       <ElButton type="primary" @click="scope.add">添加联系人</ElButton>
     </template>
     <template #row_action="scope">
@@ -35,7 +35,7 @@ const fields: TdFormFieldProps[] = [
     label: computed(() => t('school')),
     itemMessageLabel: computed(() => t('labelSchool')),
     prop: 'school',
-    component: markRaw(ElInput),
+    component: ElInput,
     item: {
       hideRequiredAsterisk: true,
     },
@@ -94,14 +94,14 @@ const fields: TdFormFieldProps[] = [
   },
   {
     type: 'array',
-    label: (index) => (index === -1 ? '' : `联系人${index + 1}`),
+    label: (index) => (index === -1 ? '联系人' : `联系人${index + 1}`),
     prop: 'contacts',
     fields: [
       {
         type: 'widget',
         label: '姓名',
         prop: 'name',
-        component: markRaw(ElInput),
+        component: ElInput,
         rules: [{ max: 5 }],
       },
       {

@@ -21,7 +21,7 @@
     "verbatimModuleSyntax": true,
     "skipLibCheck": true,
     "paths": {
-      "tiddy/*": ["./src/*"]
+      "tiddy/*": ["./dist/*"]
     }
   },
   "include": [

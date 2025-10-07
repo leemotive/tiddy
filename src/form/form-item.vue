@@ -1,5 +1,5 @@
 <template>
-<ElFormItem ref="formItem" :class="[{'hide-asterisk': hideRequiredAsterisk}]" v-bind="itemAttr">
+<ElFormItem ref="formItem" :class="[{'hide-asterisk': hideRequiredAsterisk}]" v-bind="itemAttr" >
   <template v-for="(_, k) in slots" :key="k" #[k]="scope">
     <slot v-bind="scope" :name="k"></slot>
   </template>
@@ -11,22 +11,25 @@
 
 <script setup lang="ts">
 import { ElFormItem, useNamespace, type FormItemInstance } from 'element-plus';
-import { computed, isRef, unref, useSlots, useTemplateRef, type Slots } from 'vue';
-import { cut } from 'yatter';
-import { formItemPropsDef, tdformItemProps } from './utils';
+import { computed, isRef, unref, useAttrs, useSlots, useTemplateRef, type Slots } from 'vue';
+import { formCtxKey, tdformItemProps, type FormContext } from './utils';
+import { inject } from 'vue';
+
+defineOptions({
+  inheritAttrs: false,
+});
 
 const ns = useNamespace('form-item');
-const props = defineProps(formItemPropsDef);
+const props = defineProps(tdformItemProps);
+const formCtx = inject<FormContext>(formCtxKey)!;
 
+const attrs = useAttrs();
 const itemAttr = computed(() => {
-  const attrs = cut(props, Object.keys(tdformItemProps));
-
+  const res: Record<string, any> = { ...formCtx.itemOption };
   for (const [k, v] of Object.entries(attrs)) {
-    if (isRef<any>(v)) {
-      Reflect.set(attrs, k, v.value);
-    }
+    Reflect.set(res, k, isRef(v) ? v.value : v);
   }
-  return attrs;
+  return res;
 });
 
 const formItemRef = useTemplateRef<FormItemInstance>('formItem');
@@ -34,17 +37,20 @@ const slots: Slots = useSlots();
 const validateClass = ns.e('error');
 
 const propString = computed(() => {
-  if (!props.prop) {
+  if (!attrs.prop) {
     return '';
   }
-  if (Array.isArray(props.prop)) {
-    return props.prop.join('.');
+  if (Array.isArray(attrs.prop)) {
+    return attrs.prop.join('.');
   }
-  return props.prop;
+  return attrs.prop as string;
 });
 
 function innerFormatMessage(m: string) {
-  const message = m.replace(propString.value, unref(props.messageLabel) || unref(props.label) || propString.value);
+  const message = m.replace(
+    propString.value,
+    unref(props.messageLabel) || unref(attrs.label as string) || propString.value,
+  );
   return props.formatMessage?.(message) ?? message;
 }
 

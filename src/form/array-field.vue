@@ -45,12 +45,14 @@
 </template>
 <script setup lang="ts">
 import TdFormItem from './form-item.vue';
-import { arrayFieldPropsDef, formCtxKey, isLabelHidden, type FormContext, type Writeable } from './utils';
+import { arrayFieldPropsDef, formCtxKey, type FormContext, type Writeable } from './utils';
 import { computed, inject, onMounted, useAttrs } from 'vue';
 import { cut, getDeepValue, isFunction, isNullOrUndef, pick, setDeepValue } from 'yatter';
 import { getKey, resolveSlotNames } from '../utils';
 import FormField from './form-field.vue';
 import type { OrFunction } from '../types';
+
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps(arrayFieldPropsDef);
 const attrs = useAttrs();
@@ -80,10 +82,7 @@ const values = computed(() => {
 
 const labelProps = computed<any>(() => {
   const p = pick(props, [/^label/]) as Writeable<typeof props>;
-  if (isLabelHidden(props.hideLabel)) {
-    p.label = '';
-    p.labelWidth = '0';
-  }
+
   p.label = indexProp(p.label, -1, '');
   p.labelWidth = indexProp(p.labelWidth, -1, p.label ? undefined : '0');
   p.labelPosition = indexProp(p.labelPosition, -1);

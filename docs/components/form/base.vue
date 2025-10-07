@@ -1,10 +1,10 @@
 <template>
-  <TdForm :fields="fields" :model="model" label-width="80" />
+  <TdForm ref="formRef" :fields="fields" :model="model" label-width="80" />
 </template>
 <script setup lang="ts">
 import { TdForm, type TdFormFieldProps } from 'tiddy';
 import { ElInput } from 'element-plus';
-import { ref } from 'vue';
+import { ref, useTemplateRef } from 'vue';
 
 const model = ref({});
 const fields: TdFormFieldProps[] = [
@@ -22,4 +22,7 @@ const fields: TdFormFieldProps[] = [
     },
   },
 ];
+
+const formRef = useTemplateRef('formRef');
+console.log(formRef);
 </script>

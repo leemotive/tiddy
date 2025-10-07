@@ -1,4 +1,4 @@
-import { formItemProps, type FormItemProps, type FormItemRule, type FormProps } from 'element-plus';
+import type { FormItemProps, FormItemRule, FormProps } from 'element-plus';
 import {
   isRef,
   type AllowedComponentProps,
@@ -62,7 +62,6 @@ export const widgetFieldPropsDef = {
   },
   component: {
     type: [String, Object, Function] as PropType<string | Component | Raw<Component>>,
-    required: true,
   },
   modifiers: {
     type: Array as PropType<Array<'lazy' | 'number' | 'trim'>>,
@@ -121,9 +120,6 @@ export const arrayFieldPropsDef = {
     type: String as PropType<'array'>,
     default: 'array',
     required: true as const,
-  },
-  hideLabel: {
-    type: [Boolean, Function, Object] as PropType<OrFunction<boolean> | ComputedRef>,
   },
   rawValue: {
     type: Function as PropType<AnyFunction>,
@@ -212,19 +208,5 @@ export const tdformItemProps = {
     default: false,
   },
 }
-export const formItemPropsDef = {
-  ...formItemProps,
-  ...tdformItemProps,
-}
 
-export type TdFormItemProps = ExtractPublicPropTypes<typeof formItemPropsDef>;
-
-export function isLabelHidden(hideLabel?: OrFunction<boolean> | ComputedRef): boolean {
-  if (isFunction(hideLabel)) {
-    return hideLabel();
-  }
-  if (isRef(hideLabel)) {
-    return hideLabel.value;
-  }
-  return !!hideLabel;
-}
+export type TdFormItemProps = ExtractPublicPropTypes<typeof tdformItemProps> & Partial<FormItemProps>;

@@ -26,10 +26,10 @@ export function registerWidget(name: string | Component, comp?: Component) {
 
 export function resolveWidget(name?: string | Component | Raw<Component>) {
   if (!name) {
-    return Fragment;
+    return;
   }
   if (isString(name)) {
-    return componens[name] ?? Fragment;
+    return componens[name];
   }
   return name;
 }

@@ -23,7 +23,7 @@ jobs:
       - name: Output Versions
         run: node --version && pnpm --version
       - name: Install and build
-        run: pnpm i && pnpm docs:build
+        run: pnpm i && pnpm build && pnpm docs:build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

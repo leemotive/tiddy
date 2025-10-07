@@ -24,7 +24,6 @@ const fields: TdFormFieldProps[] = [];
 | slots | string \| array | - | 当前仅在`layout`, `widget`类型字段中生效, 给控制传递的slot, 如果使用字符串，则需要在`TdForm`中使用模板定义插槽，也可以使用对象配置`h`函数直接在js定义插槽内容 |
 | fields | TdFormFieldProps[] | - | 子字段配置, 可以进行数组对象布局的嵌套，而`widget`型字段就需要再有子字段了 |
 | hide | boolean \| ComputedRef\<boolean> \| function | false | 是否隐藏字段 |
-| hideLabel | boolean \| function | false | 当前仅在数组型字段中支持是否隐藏标签外层标签 |
 | labelWidth | string \| number \| function | - | 同`ElFormItem`配置， 在数组型字段中可以使用函数 |
 | labelPosition | enum | - | 同`ElFormItem`配置，在数组型字段中可以使用函数 |
 | modifiers | enum | - | 当前仅支持 `lazy` \| `number` \| `trim` |

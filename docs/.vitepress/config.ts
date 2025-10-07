@@ -60,7 +60,7 @@ export default defineConfig({
   vite: {
     resolve: {
       alias: {
-        'tiddy': path.resolve(__dirname, '../../src/')
+        'tiddy': path.resolve(__dirname, '../../dist/')
       }
     },
     plugins: [

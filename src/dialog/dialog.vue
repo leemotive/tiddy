@@ -6,7 +6,7 @@
 </ElDialog>
 </template>
 <script setup lang="ts">
-import { ref, computed, useSlots, type Slots, useTemplateRef } from 'vue';
+import { ref, computed, useSlots, type Slots, useTemplateRef, useAttrs } from 'vue';
 import { ElDialog, type DialogInstance, type FormInstance } from 'element-plus';
 import { dialogPropsDef, type TdDialogProps } from './utils';
 
@@ -14,30 +14,18 @@ defineOptions({
   name: 'TdDialog',
 });
 type DialogSlots = DialogInstance['$slots'] extends Slots & infer T ? T : never;
-type SlotFun = {
-  ok: typeof confirm;
-  close: typeof close;
-  step: typeof step;
-};
-type ExFun<T> = Exclude<T, undefined>;
-type TdDialogSlots = {
-  [K in keyof DialogSlots]?: (props: Parameters<ExFun<DialogSlots[K]>>[0] & SlotFun) => any;
-};
-
-defineSlots<TdDialogSlots>();
-
 const props = defineProps(dialogPropsDef);
 const propsFromApi = ref({});
 const visible = ref(false);
 
 const waiting = {} as PromiseWithResolvers<any>;
 const dialogRef = useTemplateRef('dialog');
-const subProps = computed<any>(() => ({ ...props, ...propsFromApi.value }));
+const attrs = useAttrs();
+const subProps = computed<any>(() => ({ ...attrs, ...propsFromApi.value }));
 
 const slots: Slots = useSlots();
 
-// 这里的as就是为了上面的动态slot不报错
-const slotNames = computed(() => Object.keys(slots) as ['footer']);
+const slotNames = computed(() => Object.keys(slots) as (keyof DialogSlots)[]);
 
 function open(options: TdDialogProps = {}) {
   propsFromApi.value = options;
@@ -70,6 +58,7 @@ const expose = {
   wait,
   close,
 };
+type __TdDialogExpose = typeof expose & DialogInstance;
 defineExpose(
   new Proxy(expose, {
     get(target, key) {
@@ -78,7 +67,7 @@ defineExpose(
     has(target, key) {
       return Object.hasOwn(target, key) || Reflect.has(dialogRef.value || {}, key);
     },
-  }),
+  }) as __TdDialogExpose,
 );
 </script>
 <style lang="scss" scoped></style>

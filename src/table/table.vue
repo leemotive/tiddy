@@ -1,6 +1,6 @@
 <template>
   <slot name="before"></slot>
-  <ElTable ref="tableRef" :data="data" v-bind="{...$attrs, ...subProps}">
+  <ElTable ref="tableRef" v-bind="$attrs">
     <TableCol v-for="col in columns" :key="col.label" v-bind="col" />
     <template v-for="name in slotNames" :key="name" #[name]="scope">
       <slot v-bind="scope" :name="name"></slot>
@@ -15,9 +15,9 @@ import { getSlotsFactory } from '../utils';
 import TableCol from './table-col.vue';
 import { computed, provide, useSlots, useTemplateRef, type Slots } from 'vue';
 import { tableCtxKey, tablePropsDef } from './utils';
-import { cut } from 'yatter';
 
 defineOptions({
+  inheritAttrs: false,
   name: 'TdTable',
 });
 
@@ -26,7 +26,6 @@ const props = defineProps(tablePropsDef);
 const slots: Slots = useSlots();
 const tableRef = useTemplateRef<TableInstance>('tableRef');
 const slotNames = computed<string[]>(() => Object.keys(slots));
-const subProps = computed(() => cut(props, ['columns']));
 
 provide(tableCtxKey, {
   getParentSlots: getSlotsFactory(slots),
@@ -43,7 +42,7 @@ defineExpose(
         return Reflect.has(tableRef.value || {}, key);
       },
     },
-  ),
+  ) as TableInstance,
 );
 </script>
 
