@@ -25,7 +25,7 @@ const formCtx = inject<FormContext>(formCtxKey)!;
 
 const attrs = useAttrs();
 const itemAttr = computed(() => {
-  const res: Record<string, any> = { ...formCtx.itemOption };
+  const res: Record<string, any> = { ...formCtx?.itemOption };
   for (const [k, v] of Object.entries(attrs)) {
     Reflect.set(res, k, isRef(v) ? v.value : v);
   }

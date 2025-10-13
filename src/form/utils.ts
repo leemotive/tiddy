@@ -1,17 +1,16 @@
 import type { FormItemProps, FormItemRule, FormProps } from 'element-plus';
-import {
-  isRef,
-  type AllowedComponentProps,
-  type Component,
-  type ComputedRef,
-  type CSSProperties,
-  type ExtractPublicPropTypes,
-  type InjectionKey,
-  type PropType,
-  type Raw,
+import type {
+  AllowedComponentProps,
+  Component,
+  ComputedRef,
+  CSSProperties,
+  DefineComponent,
+  ExtractPublicPropTypes,
+  InjectionKey,
+  PropType,
+  Raw,
 } from 'vue';
 import type { AnyFunction, GetSlotsFunction, MakeOptional, OrArray, OrFunction, SlotDef } from '../types';
-import { isFunction } from 'yatter';
 
 const fieldsPropsDef = {
   fields: {
@@ -113,6 +112,13 @@ export const widgetFieldPropsDef = {
   },
   ...commonFieldPropsDef,
 };
+type PropsOf<C> =
+  // .vue SFC and many typed components
+  C extends DefineComponent<infer P, any, any, any, any> ? P :
+  // class-style / constructor components
+  C extends new (...args: any) => any ? InstanceType<C> extends { $props: infer P } ? P : Record<string, any> :
+  // fallback
+  Record<string, any>;
 export type TdWidgetFieldProps = ExtractPublicPropTypes<typeof widgetFieldPropsDef> & AllowedComponentProps & Record<PropertyKey, any>;
 
 export const arrayFieldPropsDef = {
@@ -210,3 +216,7 @@ export const tdformItemProps = {
 }
 
 export type TdFormItemProps = ExtractPublicPropTypes<typeof tdformItemProps> & Partial<FormItemProps>;
+
+export function widget<T>(p: { component: T, widget?: PropsOf<T> }) {
+  return p;
+}
