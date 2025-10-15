@@ -1,9 +1,4 @@
-import { dialogProps } from "element-plus";
-import type { ExtractPublicPropTypes } from "vue";
-import { cut } from "yatter";
+import type { DialogProps } from "element-plus";
 
-export const dialogPropsDef = {
-  ...cut(dialogProps, ['modelValue'])
-}
 
-export type TdDialogProps = ExtractPublicPropTypes<Omit<typeof dialogProps, "modelValue">>;
+export type TdDialogProps = Omit<DialogProps, "modelValue">;

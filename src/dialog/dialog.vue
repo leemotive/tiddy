@@ -8,26 +8,26 @@
 <script setup lang="ts">
 import { ref, computed, useSlots, type Slots, useTemplateRef, useAttrs } from 'vue';
 import { ElDialog, type DialogInstance, type FormInstance } from 'element-plus';
-import { dialogPropsDef, type TdDialogProps } from './utils';
+import type { TdDialogProps } from './utils';
+import { cut } from 'yatter';
 
 defineOptions({
   name: 'TdDialog',
 });
 type DialogSlots = DialogInstance['$slots'] extends Slots & infer T ? T : never;
-const props = defineProps(dialogPropsDef);
 const propsFromApi = ref({});
 const visible = ref(false);
 
 const waiting = {} as PromiseWithResolvers<any>;
 const dialogRef = useTemplateRef('dialog');
 const attrs = useAttrs();
-const subProps = computed<any>(() => ({ ...attrs, ...propsFromApi.value }));
+const subProps = computed<any>(() => ({ ...cut(attrs, ['model-value']), ...propsFromApi.value }));
 
 const slots: Slots = useSlots();
 
 const slotNames = computed(() => Object.keys(slots) as (keyof DialogSlots)[]);
 
-function open(options: TdDialogProps = {}) {
+function open(options: Partial<TdDialogProps> = {}) {
   propsFromApi.value = options;
   visible.value = true;
   Object.assign(waiting, Promise.withResolvers());
