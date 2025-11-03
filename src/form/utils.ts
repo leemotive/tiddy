@@ -217,6 +217,6 @@ export const tdformItemProps = {
 
 export type TdFormItemProps = ExtractPublicPropTypes<typeof tdformItemProps> & Partial<FormItemProps>;
 
-export function widget<T>(p: { component: T, widget?: PropsOf<T> }) {
-  return p;
-}
+export function widget<T>(c: T, props?: PropsOf<T>) {
+  return { component: c, widget: props };
+};

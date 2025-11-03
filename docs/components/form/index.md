@@ -157,3 +157,30 @@ const fields: TdFormFieldProps[] = [
   },
 ];
 ```
+
+## 组件属性提示
+在定义输入域的组件及组件属性时，如果直接写成下面这样，将不会有组件的属性提示
+```ts
+const fields: TdFormFieldProps[] = [
+  {
+    label: '姓名',
+    prop: 'name',
+    component: ElInput,
+    widget: {
+      placeholder: '请输入姓名',
+    },
+  },
+];
+```
+可以使用widget方法来定义组件并关联属性
+```ts
+import { widget } from 'tiddy';
+const fields: TdFormFieldProps[] = [
+  {
+    label: '姓名',
+    prop: 'name',
+    component: widget(ElInput, {
+      placeholder: '请输入姓名',
+    }),
+  },
+];

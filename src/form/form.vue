@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import { ElForm } from 'element-plus';
-import type { FormInstance, FormEmits } from 'element-plus';
+import type { FormInstance } from 'element-plus';
 import { computed, provide, reactive, toRef, useAttrs, useSlots, useTemplateRef } from 'vue';
 import FormField from './form-field.vue';
 import { formCtxKey, formPropsDef } from './utils';
@@ -19,11 +19,9 @@ import { getKey, getSlotsFactory } from '../utils';
 const formRef = useTemplateRef('form');
 const props = defineProps(formPropsDef);
 
-const emit = defineEmits<
-  FormEmits & {
-    submit: [data: any];
-  }
->();
+const emit = defineEmits<{
+  submit: [data: any];
+}>();
 
 const slots = useSlots();
 
