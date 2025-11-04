@@ -179,7 +179,7 @@ const fields: TdFormFieldProps[] = [
   {
     label: '姓名',
     prop: 'name',
-    component: widget(ElInput, {
+    ...widget(ElInput, {
       placeholder: '请输入姓名',
     }),
   },
