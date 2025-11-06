@@ -13,7 +13,7 @@
 import { ElTable, type TableInstance } from 'element-plus';
 import { getSlotsFactory } from '../utils';
 import TableCol from './table-col.vue';
-import { computed, provide, useSlots, useTemplateRef, type Slots } from 'vue';
+import { computed, provide, useSlots, ref, type Slots } from 'vue';
 import { tableCtxKey, tablePropsDef } from './utils';
 
 defineOptions({
@@ -24,7 +24,7 @@ defineOptions({
 const props = defineProps(tablePropsDef);
 
 const slots: Slots = useSlots();
-const tableRef = useTemplateRef<TableInstance>('tableRef');
+const tableRef = ref(null);
 const slotNames = computed<string[]>(() => Object.keys(slots));
 
 provide(tableCtxKey, {

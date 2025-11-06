@@ -91,19 +91,19 @@ export const widgetFieldPropsDef = {
     default: () => [],
   },
   slots: {
-    type: [Array, Object] as PropType<OrArray<SlotDef>>,
+    type: [Array, Object, String] as PropType<OrArray<SlotDef>>,
     default: () => null,
   },
   prependSlots: {
-    type: [Array, Object] as PropType<OrArray<SlotDef>>,
+    type: [Array, Object, String] as PropType<OrArray<SlotDef>>,
     default: () => null,
   },
   appendSlots: {
-    type: [Array, Object] as PropType<OrArray<SlotDef>>,
+    type: [Array, Object, String] as PropType<OrArray<SlotDef>>,
     default: () => null,
   },
   itemSlots: {
-    type: [Array, Object] as PropType<OrArray<SlotDef>>,
+    type: [Array, Object, String] as PropType<OrArray<SlotDef>>,
     default: () => null,
   },
   default: {
@@ -164,7 +164,7 @@ export const layoutFieldPropsDef = {
     required: true as const,
   },
   slots: {
-    type: [Array, Object] as PropType<OrArray<SlotDef>>,
+    type: [Array, Object, String] as PropType<OrArray<SlotDef>>,
     default: () => [],
   },
   ...fieldsPropsDef,

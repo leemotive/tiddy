@@ -26,7 +26,7 @@ type TableColumnProp = {
 export type TdTableColumnProps = ExtractPublicPropTypes<TableColumnProp> & TableColumnInstance["$props"];
 export const tableColumnPropsDef: TableColumnProp = {
   slots: {
-    type: [Array, Object] as PropType<OrArray<SlotDef>>,
+    type: [Array, Object, String] as PropType<OrArray<SlotDef>>,
     default: () => null,
   },
   columns: {
