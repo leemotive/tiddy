@@ -8,8 +8,8 @@
   />
   <FormField
     v-for="field in subFields"
-    :key="getKey(field)"
-    v-bind="field"
+    :key="getKey(field[0])"
+    v-bind="{...field[0], ...field[1]}"
   />
   <DeepSlot
     v-for="psc in suffixSlots"
@@ -39,10 +39,7 @@ const formCtx = inject<FormContext>(formCtxKey)!;
 
 const subFields = computed(() => {
   return props.fields.map((field: TdFormFieldProps) => {
-    return {
-      ...field,
-      'full-prop': [attrs['full-prop'], field.prop].filter(Boolean).join('.'),
-    };
+    return [field, { 'full-prop': [attrs['full-prop'], field.prop].filter(Boolean).join('.') }];
   });
 });
 

@@ -2,7 +2,6 @@ import type { FormItemProps, FormItemRule, FormProps } from 'element-plus';
 import type {
   AllowedComponentProps,
   Component,
-  ComputedRef,
   CSSProperties,
   DefineComponent,
   ExtractPublicPropTypes,
@@ -10,7 +9,7 @@ import type {
   PropType,
   Raw,
 } from 'vue';
-import type { AnyFunction, GetSlotsFunction, MakeOptional, OrArray, OrFunction, SlotDef } from '../types';
+import type { AnyFunction, GetSlotsFunction, MakeOptional, OrArray, OrFunction, OrRef, SlotDef } from '../types';
 
 const fieldsPropsDef = {
   fields: {
@@ -28,11 +27,11 @@ const commonFieldPropsDef = {
     required: true as const,
   },
   hide: {
-    type: [Boolean, Function, Object] as PropType<OrFunction<boolean> | ComputedRef>,
+    type: [Boolean, Function, Object] as PropType<OrFunction<boolean> | OrRef<boolean>>,
     default: false,
   },
   label: {
-    type: [String, Function, Object] as PropType<OrFunction<string> | ComputedRef<string>>,
+    type: [String, Function, Object] as PropType<OrFunction<string> | OrRef<string>>,
   },
   labelWidth: {
     type: [String, Number, Function] as PropType<OrFunction<string | number>>,
@@ -75,7 +74,7 @@ export const widgetFieldPropsDef = {
     default: (value: any) => value,
   },
   item: {
-    type: Object as PropType<TdFormItemProps>,
+    type: Object as PropType<OrRef<TdFormItemProps>>,
     default: () => ({}),
   },
   widget: {
@@ -87,7 +86,7 @@ export const widgetFieldPropsDef = {
     default: () => ({}),
   },
   rules: {
-    type: [Array, Object] as PropType<OrArray<FormItemRule>>,
+    type: [Array, Object] as PropType<OrRef<OrArray<FormItemRule>>>,
     default: () => [],
   },
   slots: {
@@ -202,7 +201,7 @@ export type Writeable<T> = {
 
 export const tdformItemProps = {
   messageLabel: {
-    type: [String, Object] as PropType<string | ComputedRef<string>>,
+    type: [String, Object] as PropType<OrRef<string>>,
     default: '',
   },
   formatMessage: {
@@ -217,6 +216,6 @@ export const tdformItemProps = {
 
 export type TdFormItemProps = ExtractPublicPropTypes<typeof tdformItemProps> & Partial<FormItemProps>;
 
-export function widget<T>(c: T, props?: PropsOf<T>) {
+export function widget<T>(c: T | Raw<T>, props?: OrRef<PropsOf<T>>) {
   return { component: c, widget: props };
 };

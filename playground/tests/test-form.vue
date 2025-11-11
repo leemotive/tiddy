@@ -17,7 +17,7 @@
 import { computed, h, markRaw, ref, useTemplateRef } from 'vue';
 import { type TdFormFieldProps, type TdFormInstance, TdForm } from '../../src';
 import { useI18n } from 'vue-i18n';
-import { ElInput, ElOption, ElSelect, ElSwitch, ElButton } from 'element-plus';
+import { ElInput, ElOption, ElSelect, ElSwitch, ElButton, ElRadioGroup } from 'element-plus';
 
 const { t } = useI18n();
 
@@ -29,7 +29,41 @@ const cardOptions = [
   { label: '护照', value: 'passport' },
 ];
 
-const fields: TdFormFieldProps[] = [
+const fields: TdFormFieldProps[] = ref([
+  {
+    type: 'layout',
+    hide: computed(() => model.value.school === '22'),
+    fields: [
+      {
+        prop: 'state',
+        label: '状态',
+        component: markRaw(ElRadioGroup),
+        hide: computed(() => model.value.school === '23'),
+        widget: {
+          options: [
+            { label: '未提交', value: '0' },
+            { label: '已提交', value: '1' },
+            { label: '已通过', value: '2' },
+            { label: '已拒绝', value: '3' },
+          ],
+        },
+        on: {
+          change: (value) => {
+            console.log(value);
+          },
+        },
+      },
+      {
+        label: 'DNS',
+        prop: 'dns',
+        hide: computed(() => model.value.state === '0'),
+        component: markRaw(ElInput),
+        widget: computed(() => ({
+          disabled: model.value.state === '1',
+        })),
+      },
+    ],
+  },
   {
     type: 'widget',
     label: computed(() => t('school')),
@@ -134,7 +168,7 @@ const fields: TdFormFieldProps[] = [
       },
     ],
   },
-];
+]);
 
 const model = ref({ contacts: [], school: '23' });
 </script>

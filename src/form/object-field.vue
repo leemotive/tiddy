@@ -1,6 +1,6 @@
 <template>
   <TdFormItem v-bind="labelProps" class="layout-form-item">
-    <FormField v-for="field in subFields" :key="getKey(field)" v-bind="field" />
+    <FormField v-for="field in subFields" :key="getKey(field[0])" v-bind="{...field[0], ...field[1]}" />
   </TdFormItem>
 </template>
 
@@ -20,10 +20,7 @@ const labelProps = computed<any>(() => pick(props, [/^label/]));
 
 const subFields = computed(() => {
   return props.fields.map((field: TdFormFieldProps) => {
-    return {
-      ...field,
-      'full-prop': [attrs['full-prop'], field.prop].filter(Boolean).join('.'),
-    };
+    return [field, { 'full-prop': [attrs['full-prop'], field.prop].filter(Boolean).join('.') }];
   });
 });
 </script>

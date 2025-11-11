@@ -1,6 +1,6 @@
 {
   "name": "tiddy",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "packageManager": "pnpm@10.11.0",
   "description": "A set of Vue 3 components based on element-plus",
   "type": "module",
@@ -14,7 +14,9 @@
     "url": "git+https://github.com/leemotive/tiddy.git"
   },
   "author": "leemotive <wstation@163.com>",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -37,7 +39,7 @@
     "docs:preview": "vitepress preview docs"
   },
   "peerDependencies": {
-    "element-plus": "^2.9.11",
+    "element-plus": "^2.11.7",
     "vue": "^3.0.0"
   },
   "devDependencies": {
@@ -47,10 +49,10 @@
     "@vue/test-utils": "^2.4.6",
     "async-validator": "^4.2.5",
     "decimal-format": "^4.0.3",
-    "element-plus": "^2.9.11",
+    "element-plus": "^2.11.7",
     "happy-dom": "^17.4.7",
     "sass-embedded": "^1.89.1",
-    "tsdown": "^0.15.6",
+    "tsdown": "^0.16.4",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3",
     "vite": "npm:rolldown-vite@latest",

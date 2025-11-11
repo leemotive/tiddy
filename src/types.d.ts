@@ -18,3 +18,4 @@ export interface ComponentSlot {
 
 export type SlotDef = ComponentSlot | string | RegExp;
 export type GetSlotsFunction = (names: SlotDef[]) => ComponentSlot[];
+export type OrRef<T> = T | Ref<T>;
