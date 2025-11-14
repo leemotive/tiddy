@@ -10,11 +10,12 @@
 
 <script setup lang="ts">
 import { ElForm } from 'element-plus';
-import type { FormInstance } from 'element-plus';
+import type { FormInstance, FormItemProp } from 'element-plus';
 import { computed, provide, reactive, toRef, useAttrs, useSlots, useTemplateRef } from 'vue';
 import FormField from './form-field.vue';
 import { formCtxKey, formPropsDef } from './utils';
 import { getKey, getSlotsFactory } from '../utils';
+import { ensureArray } from 'yatter';
 
 const formRef = useTemplateRef('form');
 const props = defineProps(formPropsDef);
@@ -40,9 +41,15 @@ provide(
   }),
 );
 
-function reValidateErrorFields() {
-  for (const field of formRef.value?.fields ?? []) {
-    if (field.validateStatus === 'error') {
+function reValidateErrorFields(props?: FormItemProp) {
+  let fields = formRef.value?.fields ?? [];
+  if (props) {
+    fields = fields.filter((f) => {
+      return ensureArray(props).includes(f.propString);
+    });
+  }
+  for (const field of fields) {
+    if (field.validateState === 'error') {
       field.validate('');
     }
   }

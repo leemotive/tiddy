@@ -23,7 +23,7 @@ import { ref } from 'vue';
 const data = ref({});
 const fields: TdFormFieldProps[] = [
   {
-    label: (index) => (index < 0 ? '' : `系数${index + 1}`),
+    label: (index: number) => (index < 0 ? '' : `系数${index + 1}`),
     prop: 'ratio',
     type: 'array',
     fields: [

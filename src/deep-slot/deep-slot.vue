@@ -29,4 +29,4 @@ const text = computed(() => {
   return props.text ?? '';
 });
 </script>
-<style lang="scss" scoped></style>
+<style lang="css" scoped></style>

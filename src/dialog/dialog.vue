@@ -70,4 +70,4 @@ defineExpose(
   }) as __TdDialogExpose,
 );
 </script>
-<style lang="scss" scoped></style>
+<style lang="css" scoped></style>

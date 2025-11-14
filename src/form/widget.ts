@@ -1,4 +1,4 @@
-import { Fragment, type Component, type Raw } from 'vue';
+import type { Component, Raw } from 'vue';
 import { isString } from 'yatter';
 import type { OrUndef } from '../types';
 

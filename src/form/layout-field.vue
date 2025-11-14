@@ -49,5 +49,5 @@ const { prefix: prefixSlots, suffix: suffixSlots } = groupBy(
   (slot) => slot.name.match(/^[a-z]+/i)?.[0] ?? '',
 );
 </script>
-<style lang="scss" scoped>
+<style lang="css" scoped>
 </style>

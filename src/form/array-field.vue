@@ -5,7 +5,7 @@
   :add="lineAction.add.bind(null, -1)"
   :empty="true"
 />
-<TdFormItem v-if="!OuterEmptySlot || values.length" v-bind="labelProps" class="layout-form-item">
+<TdFormItem v-else v-bind="labelProps" class="layout-form-item">
   <component
     v-if="EmptySlot && !values.length"
     :is="EmptySlot.component"

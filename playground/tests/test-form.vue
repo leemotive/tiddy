@@ -10,18 +10,22 @@
     <template #range-out-empty="scope">
       <ElButton type="warning" @click="scope.add">添加区间</ElButton>
     </template>
+    <template #suffix>
+      <ElButton type="primary" native-type="submit">Submit</ElButton>
+      <ElButton type="primary" @click="revalidate">Reset</ElButton>
+    </template>
   </TdForm>
 </template>
 
 <script setup lang="ts">
 import { computed, h, markRaw, ref, useTemplateRef } from 'vue';
-import { type TdFormFieldProps, type TdFormInstance, TdForm } from '../../src';
+import { type TdFormFieldProps, TdForm } from '../../src';
 import { useI18n } from 'vue-i18n';
-import { ElInput, ElOption, ElSelect, ElSwitch, ElButton, ElRadioGroup } from 'element-plus';
+import { ElInput, ElOption, ElSelect, ElSwitch, ElButton, ElRadioGroup, type FormItemRule } from 'element-plus';
 
 const { t } = useI18n();
 
-const formRef = useTemplateRef<TdFormInstance>('formRef');
+const formRef = useTemplateRef('formRef');
 
 const cardOptions = [
   { label: '身份证', value: 'id' },
@@ -29,7 +33,7 @@ const cardOptions = [
   { label: '护照', value: 'passport' },
 ];
 
-const fields: TdFormFieldProps[] = ref([
+const fields: TdFormFieldProps[] = [
   {
     type: 'layout',
     hide: computed(() => model.value.school === '22'),
@@ -61,6 +65,17 @@ const fields: TdFormFieldProps[] = ref([
         widget: computed(() => ({
           disabled: model.value.state === '1',
         })),
+        rules: [
+          {
+            validator: (rule: FormItemRule, value: any) => {
+              if (model.value.reason === 'passport') {
+                return Error('错误格式');
+              }
+              return true;
+            },
+          },
+          { required: true },
+        ],
       },
     ],
   },
@@ -128,7 +143,7 @@ const fields: TdFormFieldProps[] = ref([
   },
   {
     type: 'array',
-    label: (index) => (index === -1 ? '联系人' : `联系人${index + 1}`),
+    label: (index: number) => (index === -1 ? '联系人' : `联系人${index + 1}`),
     prop: 'contacts',
     fields: [
       {
@@ -168,7 +183,11 @@ const fields: TdFormFieldProps[] = ref([
       },
     ],
   },
-]);
+];
 
-const model = ref({ contacts: [], school: '23' });
+const model = ref({ contacts: [], school: '23', state: '0', reason: 'id' });
+
+function revalidate() {
+  formRef.value?.reValidateErrorFields('school');
+}
 </script>

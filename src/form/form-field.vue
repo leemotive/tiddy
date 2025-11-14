@@ -1,8 +1,10 @@
 <template>
-<component :is="FieldComponents" v-bind="fieldAttrs" :full-prop="fullProp" />
+<Transition name="field">
+  <component :is="FieldComponents" v-bind="fieldAttrs" :full-prop="fullProp" />
+</Transition>
 </template>
 <script setup lang="ts">
-import { computed, Fragment, isRef, markRaw, toRaw, useAttrs } from 'vue';
+import { computed, isRef, markRaw, toRaw, useAttrs } from 'vue';
 import ObjectField from './object-field.vue';
 import WidgetField from './widget-field.vue';
 import ArrayField from './array-field.vue';
@@ -40,7 +42,7 @@ function isHidden() {
 }
 const FieldComponents = computed(() => {
   if (isHidden()) {
-    return Fragment;
+    return 'div';
   }
   if (attrs.type === 'array') {
     return ArrayField;
@@ -54,8 +56,23 @@ const FieldComponents = computed(() => {
   if (attrs.type === 'widget' || (!attrs.type && !!attrs.component)) {
     return WidgetField;
   }
-  return Fragment;
+  return 'div';
 });
 </script>
-<style lang="scss" scoped>
+<style lang="css">
+.field-enter-active, .field-leave-active {
+  transition: all 0.2s;
+  overflow: hidden;
+}
+
+.field-enter-to, .field-leave-from {
+  height: calc-size(auto, size) !important;
+  opacity: 1 !important;
+}
+
+.field-enter-from, .field-leave-to {
+  height: 0 !important;
+  margin-bottom: 0 !important;
+  opacity: 0 !important;
+}
 </style>

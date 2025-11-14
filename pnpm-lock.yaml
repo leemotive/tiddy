@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       yatter:
-        specifier: ^2.5.0
-        version: 2.5.0
+        specifier: ^3.0.0
+        version: 3.0.0
     devDependencies:
       '@biomejs/biome':
         specifier: ^1.9.4
@@ -2375,8 +2375,8 @@ packages:
     engines: {node: '>= 14.6'}
     hasBin: true
 
-  yatter@2.5.0:
-    resolution: {integrity: sha512-ZvzoN1EKVS3ACRs4bBa5FxSQOnvgQgtnPuEQg6l5R9ga4Mf9GJSFFaUBBV/qC4x3Pza02uKJcUOmMjG6rqODsg==}
+  yatter@3.0.0:
+    resolution: {integrity: sha512-ZkxEPftx245dI/zT4bwlWL2BaqbKxBgI3EktAA+DxymfufTiT0EREEjQeKbwk7U3oGUrVyopZAl6fuXzio08Gg==}
 
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
@@ -4507,6 +4507,6 @@ snapshots:
   yaml@2.8.0:
     optional: true
 
-  yatter@2.5.0: {}
+  yatter@3.0.0: {}
 
   zwitch@2.0.4: {}

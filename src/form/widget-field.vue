@@ -102,4 +102,4 @@ const beforeSlots = formCtx.getParentSlots(resolveSlotNames(props.prependSlots, 
 const afterSlots = formCtx.getParentSlots(resolveSlotNames(props.appendSlots, <string>props.prop, 'append'));
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="css" scoped></style>

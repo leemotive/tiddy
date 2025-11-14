@@ -34,5 +34,5 @@ function filtered(scope: any) {
 const tableCtx = inject<TableContext>(tableCtxKey)!;
 const columnSlots = tableCtx.getParentSlots(resolveSlotNames(props.slots, attrs.prop as string));
 </script>
-<style lang="scss" scoped>
+<style lang="css" scoped>
 </style>
