@@ -8,7 +8,7 @@ export const deepSlotPropsDef = {
     required: true as const,
   },
   component: {
-    type: [Object, Function] as PropType<Component | Slot>,
+    type: [Object, Function] as PropType<Component | Slot | string>,
   },
   props: {
     type: Function as PropType<(scope?: any) => Record<string, any>>,

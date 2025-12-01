@@ -54,9 +54,13 @@ function reValidateErrorFields(props?: FormItemProp) {
     }
   }
 }
+function isValidateError(prop: string) {
+  return formRef.value?.getField(prop)?.validateState === 'error';
+}
 
 const expose = {
   reValidateErrorFields,
+  isValidateError,
   model: computed(() => attrs.model),
 };
 type __TdFormExpose = typeof expose & FormInstance;

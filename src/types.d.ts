@@ -9,7 +9,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>
 
 export interface ComponentSlot {
   name: string;
-  component?: Component | Slot;
+  component?: Component | Slot | string;
   props?: (scope: any) => Record<string, any>;
   text?: OrFunction<string>;
   slots?: SlotDef[] | string;

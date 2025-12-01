@@ -85,6 +85,9 @@ const fields: TdFormFieldProps[] = [
     itemMessageLabel: computed(() => t('labelSchool')),
     prop: 'school',
     component: ElInput,
+    widget: computed(() => ({
+      disabled: model.value.state === '1',
+    })),
     item: {
       hideRequiredAsterisk: true,
     },

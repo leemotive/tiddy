@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { ElFormItem, useNamespace, type FormItemInstance } from 'element-plus';
-import { computed, isRef, unref, useAttrs, useSlots, useTemplateRef, type Slots } from 'vue';
+import { computed, unref, useAttrs, useSlots, useTemplateRef, type Slots } from 'vue';
 import { formCtxKey, tdformItemProps, type FormContext } from './utils';
 import { inject } from 'vue';
 
@@ -27,7 +27,7 @@ const attrs = useAttrs();
 const itemAttr = computed(() => {
   const res: Record<string, any> = { ...formCtx?.itemOption };
   for (const [k, v] of Object.entries(attrs)) {
-    Reflect.set(res, k, isRef(v) ? v.value : v);
+    Reflect.set(res, k, unref(v));
   }
   return res;
 });
