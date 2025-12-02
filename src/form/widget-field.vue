@@ -8,7 +8,7 @@
     :ctx-key="formCtxKey"
   />
   <template v-if="!!Widget">
-    <Widget v-bind="widgetAttrs" v-on="on" v-model="widgetModel" class="widget-component" @blur="onModelChange">
+    <Widget v-bind="widgetAttrs" @blur="onModelChange" v-on="on" v-model="widgetModel" class="widget-component" >
       <template v-for="sc in widgetSlots" :key="sc.name" #[sc.name]="scope">
         <DeepSlot v-bind="sc" :scope="scope" :ctx-key="formCtxKey" />
       </template>
@@ -71,11 +71,10 @@ const itemAttrs = computed<any>(() => {
   return attr;
 });
 
-function onModelChange(...args: any[]) {
+function onModelChange() {
   if (props.modifiers.includes('lazy')) {
     updateModelValue(tempValue.value);
   }
-  props.on.blur?.(...args);
 }
 
 function updateModelValue(v: any) {

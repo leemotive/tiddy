@@ -92,6 +92,11 @@ const fields: TdFormFieldProps[] = [
       hideRequiredAsterisk: true,
     },
     rules: [{ max: 5, required: true }],
+    on: {
+      blur() {
+        console.log('blur');
+      },
+    },
   },
   {
     label: '申请原因',
