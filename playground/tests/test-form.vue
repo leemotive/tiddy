@@ -1,6 +1,6 @@
 <template>
   <TdForm ref="formRef" :fields="fields" :model="model" label-width="120">
-    <template #prefix>{{ model }}</template>
+    <template #prefix><div style="white-space: pre;">{{ model }}</div></template>
     <template #contacts-action_empty="scope">
       <ElButton type="primary" @click="scope.add">添加联系人</ElButton>
     </template>
@@ -82,6 +82,7 @@ const fields: TdFormFieldProps[] = [
   {
     type: 'widget',
     label: computed(() => t('school')),
+    modifiers: ['trim'],
     itemMessageLabel: computed(() => t('labelSchool')),
     prop: 'school',
     component: ElInput,
@@ -91,7 +92,7 @@ const fields: TdFormFieldProps[] = [
     item: {
       hideRequiredAsterisk: true,
     },
-    rules: [{ max: 5, required: true }],
+    rules: [{ required: true }],
     on: {
       blur() {
         console.log('blur');

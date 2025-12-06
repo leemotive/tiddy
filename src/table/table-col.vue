@@ -1,7 +1,7 @@
 <template>
   <ElTableColumn v-bind="$attrs">
-    <template v-if="columns.length">
-      <TdTableCol v-for="col in columns" :key="col.label" v-bind="col" />
+    <template v-if="visibleColumns.length">
+      <TdTableCol v-for="col in visibleColumns" :key="col.label" v-bind="col" />
     </template>
     <template v-for="sc in columnSlots" :key="sc.name" #[sc.name]="scope">
       <DeepSlot v-bind="sc" :scope="scope" :ctx-key="tableCtxKey" />
@@ -15,7 +15,7 @@
 import { ElTableColumn } from 'element-plus';
 import DeepSlot from '../deep-slot/deep-slot.vue';
 import { tableColumnPropsDef, tableCtxKey, type TableContext } from './utils';
-import { inject, useAttrs } from 'vue';
+import { computed, inject, unref, useAttrs } from 'vue';
 import { getDeepValue } from 'yatter';
 import { resolveSlotNames } from '../utils';
 
@@ -25,6 +25,7 @@ defineOptions({
 
 const props = defineProps(tableColumnPropsDef);
 const attrs = useAttrs();
+const visibleColumns = computed(() => props.columns.filter((col) => !unref(col.hide)));
 
 function filtered(scope: any) {
   const { row, column } = scope;

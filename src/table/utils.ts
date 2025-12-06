@@ -1,4 +1,4 @@
-import type { ExtractPublicPropTypes, PropType } from "vue"
+import type { ExtractPublicPropTypes, PropType, Ref } from "vue"
 import type { AnyFunction, GetSlotsFunction, OrArray, SlotDef } from "../types";
 import type { TableColumnInstance } from 'element-plus'
 
@@ -12,22 +12,26 @@ export const tableCtxKey: InjectionKey<TableContext> = Symbol('tableCtxKey');
 type TableColumnProp = {
   slots: {
     type: PropType<OrArray<SlotDef>>;
-    default: () => null;
+    default: null;
   };
   columns: {
-    type: PropType<any[]>;
+    type: PropType<TdTableColumnProps[]>;
     default: () => never[];
   };
   transform: {
     type: PropType<AnyFunction[]>;
     default: () => never[];
   };
+  hide: {
+    type: PropType<boolean | Ref<boolean>>,
+    default: false,
+  }
 }
 export type TdTableColumnProps = ExtractPublicPropTypes<TableColumnProp> & TableColumnInstance["$props"];
 export const tableColumnPropsDef: TableColumnProp = {
   slots: {
     type: [Array, Object, String] as PropType<OrArray<SlotDef>>,
-    default: () => null,
+    default: null,
   },
   columns: {
     type: Array as PropType<TdTableColumnProps[]>,
@@ -37,6 +41,10 @@ export const tableColumnPropsDef: TableColumnProp = {
     type: Array as PropType<AnyFunction[]>,
     default: () => [],
   },
+  hide: {
+    type: [Boolean, Object] as PropType<boolean | Ref<boolean>>,
+    default: false,
+  }
 };
 
 

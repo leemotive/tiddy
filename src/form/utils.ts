@@ -37,7 +37,7 @@ const commonFieldPropsDef = {
     type: [String, Number, Function] as PropType<OrFunction<string | number>>,
   },
   labelPosition: {
-    type: String as PropType<'left' | 'right' | 'auto'>,
+    type: String as PropType<FormProps["labelPosition"]>,
   },
 };
 export const objectFieldPropsDef = {

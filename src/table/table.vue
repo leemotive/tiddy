@@ -1,7 +1,7 @@
 <template>
   <slot name="before"></slot>
   <ElTable ref="tableRef" v-bind="$attrs">
-    <TableCol v-for="col in columns" :key="col.label" v-bind="col" />
+    <TableCol v-for="col in visibleColumns" :key="col.label" v-bind="col" />
     <template v-for="name in slotNames" :key="name" #[name]="scope">
       <slot v-bind="scope" :name="name"></slot>
     </template>
@@ -13,7 +13,7 @@
 import { ElTable, type TableInstance } from 'element-plus';
 import { getSlotsFactory } from '../utils';
 import TableCol from './table-col.vue';
-import { computed, provide, useSlots, ref, type Slots } from 'vue';
+import { computed, provide, useSlots, ref, unref, type Slots } from 'vue';
 import { tableCtxKey, tablePropsDef } from './utils';
 
 defineOptions({
@@ -22,6 +22,7 @@ defineOptions({
 });
 
 const props = defineProps(tablePropsDef);
+const visibleColumns = computed(() => props.columns.filter((col) => !unref(col.hide)));
 
 const slots: Slots = useSlots();
 const tableRef = ref(null);

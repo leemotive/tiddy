@@ -8,7 +8,7 @@
     :ctx-key="formCtxKey"
   />
   <template v-if="!!Widget">
-    <Widget v-bind="widgetAttrs" @blur="onModelChange" v-on="on" v-model="widgetModel" class="widget-component" >
+    <Widget v-bind="widgetAttrs" v-on="on" v-model="widgetModel" :modelModifiers="modelModifiers" class="widget-component" >
       <template v-for="sc in widgetSlots" :key="sc.name" #[sc.name]="scope">
         <DeepSlot v-bind="sc" :scope="scope" :ctx-key="formCtxKey" />
       </template>
@@ -33,7 +33,7 @@
 import { formCtxKey, widgetFieldPropsDef, type FormContext } from './utils';
 import TdFormItem from './form-item.vue';
 import { resolveWidget } from './widget';
-import { computed, inject, shallowRef, useAttrs } from 'vue';
+import { computed, inject, useAttrs } from 'vue';
 import { getDeepValue, isNullOrUndef, pick, setDeepValue, toCamelCase } from 'yatter';
 import DeepSlot from '../deep-slot/deep-slot.vue';
 import { resolveSlotNames } from '../utils';
@@ -44,20 +44,16 @@ const attrs = useAttrs();
 
 const formCtx = inject<FormContext>(formCtxKey)!;
 
-const tempValue = shallowRef(props.formatter(getDeepValue(formCtx.model, attrs['full-prop'] as string)));
+const modelModifiers = computed(() => Object.fromEntries(props.modifiers.map((m) => [m, true])));
+console.log(modelModifiers.value);
 const widgetModel = computed({
   get() {
-    if (props.modifiers.includes('lazy')) {
-      return tempValue.value;
-    }
     return props.formatter(getDeepValue(formCtx.model, attrs['full-prop'] as string));
   },
   set(v) {
-    if (props.modifiers.includes('lazy')) {
-      tempValue.value = v;
-    } else {
-      updateModelValue(v);
-    }
+    const parsed = props.parser(v);
+
+    setDeepValue(formCtx.model, attrs['full-prop'] as string, parsed);
   },
 });
 
@@ -70,23 +66,6 @@ const itemAttrs = computed<any>(() => {
   const attr = { ...attr4Item, ...props.item, ...pick(props, ['rules', /^label/]) };
   return attr;
 });
-
-function onModelChange() {
-  if (props.modifiers.includes('lazy')) {
-    updateModelValue(tempValue.value);
-  }
-}
-
-function updateModelValue(v: any) {
-  const parsed = props.parser(v);
-  if (props.modifiers.includes('trim')) {
-    setDeepValue(formCtx.model, attrs['full-prop'] as string, (parsed as string).trim());
-  } else if (props.modifiers.includes('number')) {
-    setDeepValue(formCtx.model, attrs['full-prop'] as string, Number(parsed));
-  } else {
-    setDeepValue(formCtx.model, attrs['full-prop'] as string, parsed);
-  }
-}
 
 const Widget = resolveWidget(props.component);
 
