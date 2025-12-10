@@ -45,7 +45,6 @@ const attrs = useAttrs();
 const formCtx = inject<FormContext>(formCtxKey)!;
 
 const modelModifiers = computed(() => Object.fromEntries(props.modifiers.map((m) => [m, true])));
-console.log(modelModifiers.value);
 const widgetModel = computed({
   get() {
     return props.formatter(getDeepValue(formCtx.model, attrs['full-prop'] as string));

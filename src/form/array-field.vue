@@ -38,6 +38,8 @@
           :last="vi === values.length - 1"
           :empty="false"
           :single="values.length === 1"
+          :row="v"
+          :full-prop="parentFullProp"
         />
     </div>
   </div>
@@ -118,9 +120,9 @@ const lineAction = {
     temp.splice(index + 1, 0, current);
     updateValue(temp);
   },
-  add(index: number) {
+  add(index: number, newValue?: any) {
     const temp = values.value.slice();
-    const rawValue = props.rawValue?.() || {};
+    const rawValue = newValue instanceof Event || isNullOrUndef(newValue) ? props.rawValue?.() || {} : newValue;
     temp.splice(index + 1, 0, rawValue);
     updateValue(temp);
   },
