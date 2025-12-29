@@ -7,7 +7,7 @@
       <DeepSlot v-bind="sc" :scope="scope" :ctx-key="tableCtxKey" />
     </template>
     <template v-if="transform.length" #default="scope">
-      <div v-html="filtered(scope)" />
+      <component :is="renderer(scope)" />
     </template>
   </ElTableColumn>
 </template>
@@ -16,8 +16,9 @@ import { ElTableColumn } from 'element-plus';
 import DeepSlot from '../deep-slot/deep-slot.vue';
 import { tableColumnPropsDef, tableCtxKey, type TableContext } from './utils';
 import { computed, inject, unref, useAttrs } from 'vue';
-import { getDeepValue } from 'yatter';
+import { ensureArray, getDeepValue } from 'yatter';
 import { resolveSlotNames } from '../utils';
+import { h } from 'vue';
 
 defineOptions({
   name: 'TdTableCol',
@@ -27,9 +28,17 @@ const props = defineProps(tableColumnPropsDef);
 const attrs = useAttrs();
 const visibleColumns = computed(() => props.columns.filter((col) => !unref(col.hide)));
 
-function filtered(scope: any) {
+function renderer(scope: any) {
   const { row, column } = scope;
-  return props.transform.reduce<any>((res, filter) => filter(res, row, column), getDeepValue(row, column.property));
+  const nodes = props.transform.reduce<any>(
+    (res, filter) => filter(res, row, column),
+    getDeepValue(row, column.property),
+  );
+
+  if (props.dangerouslyUseHTMLString) {
+    return h('div', { innerHTML: nodes });
+  }
+  return h('div', null, ensureArray(nodes));
 }
 
 const tableCtx = inject<TableContext>(tableCtxKey)!;

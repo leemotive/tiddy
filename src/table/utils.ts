@@ -26,6 +26,10 @@ type TableColumnProp = {
     type: PropType<boolean | Ref<boolean>>,
     default: false,
   }
+  dangerouslyUseHTMLString: {
+    type: PropType<boolean | Ref<boolean>>,
+    default: false,
+  }
 }
 export type TdTableColumnProps = ExtractPublicPropTypes<TableColumnProp> & TableColumnInstance["$props"];
 export const tableColumnPropsDef: TableColumnProp = {
@@ -42,6 +46,10 @@ export const tableColumnPropsDef: TableColumnProp = {
     default: () => [],
   },
   hide: {
+    type: [Boolean, Object] as PropType<boolean | Ref<boolean>>,
+    default: false,
+  },
+  dangerouslyUseHTMLString: {
     type: [Boolean, Object] as PropType<boolean | Ref<boolean>>,
     default: false,
   }

@@ -14,7 +14,9 @@ import {TdTable, type TdTableColumnProps} from 'tiddy';
 | 属性 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | slots | `string \| array \| object` | - | 插槽配置, 支持字符串配合模板，或者直接使用对象配合h函数 |
-| transform | `Array<(value: any) => any)>` | - | 依次调用，前一个函数的结果作为后一个函数的输入，页面显示最一个函数的返回值 |
+| transform | `Array<(value: any) => any)>` | - | 依次调用，前一个函数的结果作为后一个函数的输入，页面显示最一个函数的返回值，支持渲染vnode |
+| hide | `boolean \| Ref<boolean>` | - | 是否隐藏当前列 |
+| dangerouslyUseHTMLString |  `boolean \| Ref<boolean>` | - | 是否把transform的结果当作html渲染 |
 | columns | `TdTableColumnProps[]` | - | 同`TdTable`, 用于嵌套表头时配置 |
 
 

@@ -6,6 +6,7 @@
 import { ref } from 'vue';
 import { TdTable, type TdTableColumnProps } from '../../src';
 import { ElCheckbox } from 'element-plus';
+import { h } from 'vue';
 
 const show = ref(true);
 const tableData = ref([
@@ -31,10 +32,13 @@ const columns: TdTableColumnProps[] = [
       {
         label: '姓名',
         prop: 'name',
+        transform: [(v, r) => [v, h('br'), r.mobilephone]],
       },
       {
         label: '联系电话',
         prop: 'mobilephone',
+        dangerouslyUseHTMLString: true,
+        transform: [(v) => `联系电话: <br /> ${v}`],
       },
     ],
   },
