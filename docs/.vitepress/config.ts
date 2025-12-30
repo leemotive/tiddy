@@ -48,6 +48,7 @@ export default defineConfig({
           { text: '表单 - Form', link: '/components/form/' },
           { text: '表格 - Table', link: '/components/table/' },
           { text: '弹窗 - Dialog', link: '/components/dialog/' },
+          { text: '枚举选择器 - EnumSelector', link: '/components/enum-select/' },
         ]
       }
     ],

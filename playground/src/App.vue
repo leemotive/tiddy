@@ -4,11 +4,13 @@
       <ElRadioButton type="primary" value="form">测试表单</ElRadioButton>
       <ElRadioButton type="primary" value="table">测试表格</ElRadioButton>
       <ElRadioButton type="primary" value="dialog">测试弹窗</ElRadioButton>
+      <ElRadioButton type="primary" value="select">测试枚举选择器</ElRadioButton>
     </ElRadioGroup>
 
     <TestForm v-if="test === 'form'" />
     <TestTable v-if="test === 'table'" />
     <TestDialog v-if="test === 'dialog'" />
+    <TestSelect v-if="test === 'select'" />
   </ElConfigProvider>
 </template>
 
@@ -20,6 +22,8 @@ import Schema from 'async-validator';
 import TestForm from '../tests/test-form.vue';
 import TestTable from '../tests/test-table.vue';
 import TestDialog from '../tests/test-dialog.vue';
+import TestSelect from '../tests/test-select.vue';
+
 import { ref } from 'vue';
 
 const test = ref('form');
