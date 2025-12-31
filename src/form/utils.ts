@@ -37,7 +37,7 @@ const commonFieldPropsDef = {
     type: [String, Number, Function] as PropType<OrFunction<string | number>>,
   },
   labelPosition: {
-    type: String as PropType<FormProps["labelPosition"]>,
+    type: String as PropType<FormProps['labelPosition']>,
   },
 };
 export const objectFieldPropsDef = {
@@ -113,12 +113,20 @@ export const widgetFieldPropsDef = {
 };
 type PropsOf<C> =
   // .vue SFC and many typed components
-  C extends DefineComponent<infer P, any, any, any, any> ? P :
-  // class-style / constructor components
-  C extends new (...args: any) => any ? InstanceType<C> extends { $props: infer P } ? P : Record<string, any> :
-  // fallback
-  Record<string, any>;
-export type TdWidgetFieldProps = ExtractPublicPropTypes<typeof widgetFieldPropsDef> & AllowedComponentProps & Record<PropertyKey, any>;
+  C extends DefineComponent<infer P, any, any, any, any>
+    ? P
+    : // class-style / constructor components
+      C extends new (
+          ...args: any
+        ) => any
+      ? InstanceType<C> extends { $props: infer P }
+        ? P
+        : Record<string, any>
+      : // fallback
+        Record<string, any>;
+export type TdWidgetFieldProps = ExtractPublicPropTypes<typeof widgetFieldPropsDef> &
+  AllowedComponentProps &
+  Record<PropertyKey, any>;
 
 export const arrayFieldPropsDef = {
   type: {
@@ -143,7 +151,7 @@ export const arrayFieldPropsDef = {
   },
   lineStyle: {
     type: Object as PropType<CSSProperties>,
-    default: () => ({})
+    default: () => ({}),
   },
   mandatory: {
     type: Boolean,
@@ -168,9 +176,13 @@ export const layoutFieldPropsDef = {
   },
   ...fieldsPropsDef,
   ...commonFieldPropsDef,
+  prop: {
+    type: [String, Function] as PropType<OrFunction<string>>,
+    required: false as const,
+  },
 };
 export type TdLayoutFieldProps = Partial<TdFieldsProps> &
-  MakeOptional<ExtractPublicPropTypes<typeof layoutFieldPropsDef>, "prop"> &
+  MakeOptional<ExtractPublicPropTypes<typeof layoutFieldPropsDef>, 'prop'> &
   AllowedComponentProps;
 
 export type TdFormFieldProps = TdObjectFieldProps | TdWidgetFieldProps | TdArrayFieldProps | TdLayoutFieldProps;
@@ -198,7 +210,6 @@ export type Writeable<T> = {
   -readonly [K in keyof T]: T[K];
 };
 
-
 export const tdformItemProps = {
   messageLabel: {
     type: [String, Object] as PropType<OrRef<string>>,
@@ -212,10 +223,10 @@ export const tdformItemProps = {
     type: Boolean as PropType<boolean>,
     default: false,
   },
-}
+};
 
 export type TdFormItemProps = ExtractPublicPropTypes<typeof tdformItemProps> & Partial<FormItemProps>;
 
 export function widget<T>(c: T | Raw<T>, props?: OrRef<PropsOf<T>>) {
   return { component: c, widget: props };
-};
+}
