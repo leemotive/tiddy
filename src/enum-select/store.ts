@@ -1,15 +1,17 @@
-import { computed, ref } from 'vue';
+import { computed, ref, type ComputedRef } from 'vue';
+import { isFunction, isNullOrUndef } from 'yatter';
 
-export type DataOption = {
+type OptionItem<T> = { label: string; value: T };
+export type DataOption<T> = {
   loading: boolean;
-  options: Array<{ label: string; value: string }>;
-  fetch?: (code: string) => Promise<Array<{ label: string; value: string }>>;
+  options: Array<OptionItem<T>>;
+  fetch?: (code: string) => Promise<OptionItem<T>[]>;
 };
 
-let defaultFetch: DataOption['fetch'];
-const store = ref<Map<string, DataOption>>(new Map());
+let defaultFetch: DataOption<any>['fetch'];
+const store = ref<Map<string, DataOption<any>>>(new Map());
 
-export function getOptions(code: string, fetch?: DataOption['fetch']) {
+export function getOptions<T>(code: string, fetch?: DataOption<T>['fetch']) {
   return computed(() => {
     if (!store.value.has(code)) {
       store.value.set(code, { loading: false, options: [], fetch });
@@ -40,9 +42,20 @@ export function clearEnum(code: string) {
   data.options = [];
 }
 
-export function getEnum(code: string, value: string, fetch?: DataOption['fetch']) {
+export function getEnum<T>(code: string, fetch?: DataOption<T>['fetch']): ComputedRef<OptionItem<T>[]>;
+export function getEnum<T>(
+  code: string,
+  value: T,
+  fetch?: DataOption<T>['fetch'],
+): ComputedRef<OptionItem<T> | undefined>;
+export function getEnum<T>(code: string, valueOrFetch?: T | DataOption<T>['fetch'], fetch?: DataOption<T>['fetch']) {
+  const value = isFunction(valueOrFetch) ? undefined : valueOrFetch;
+  const fetchArg = isFunction(valueOrFetch) ? valueOrFetch : fetch;
+  if (isNullOrUndef(value)) {
+    return getOptions(code, fetchArg);
+  }
   return computed(() => {
-    const options = getOptions(code, fetch);
+    const options = getOptions(code, fetchArg);
     return options.value.find((item) => item.value === value);
   });
 }
@@ -54,6 +67,6 @@ export function resetEnum(code: string) {
   fetchOptions(code);
 }
 
-export function setDefaultEnumFetch(fetch: Exclude<DataOption['fetch'], undefined>) {
+export function setDefaultEnumFetch(fetch: Exclude<DataOption<any>['fetch'], undefined>) {
   defaultFetch = fetch;
 }

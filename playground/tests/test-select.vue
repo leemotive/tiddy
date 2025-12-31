@@ -3,7 +3,6 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
-import { TdEnumSelect } from '../../src';
 
 const status = ref('pending');
 async function fetchOp(code: string) {

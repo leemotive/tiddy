@@ -13,7 +13,7 @@ import { getOptions, type DataOption } from './store';
 
 const props = defineProps<{
   code: string;
-  fetch?: DataOption['fetch'];
+  fetch?: DataOption<any>['fetch'];
 }>();
 
 const selectRef = useTemplateRef('selectRef');
