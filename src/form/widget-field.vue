@@ -70,7 +70,7 @@ const Widget = resolveWidget(props.component);
 
 const widgetAttrs = computed(() => {
   const attr4Widget = pick(attrs, [{ from: /^widget/, to: (k) => toCamelCase(k.slice(6)) }]);
-  return { ...attr4Widget, ...unref(props.widget) };
+  return Object.fromEntries(Object.entries({ ...attr4Widget, ...unref(props.widget) }).map(([k, v]) => [k, unref(v)]));
 });
 
 const widgetSlots = formCtx.getParentSlots(resolveSlotNames(props.slots, <string>props.prop));

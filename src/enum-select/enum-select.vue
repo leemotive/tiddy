@@ -9,11 +9,11 @@
 <script lang="ts" setup>
 import { ElSelect, type SelectInstance } from 'element-plus';
 import { useTemplateRef } from 'vue';
-import { getOptions, type DataOption } from './store';
+import { getOptions, type EnumData } from './store';
 
 const props = defineProps<{
   code: string;
-  fetch?: DataOption<any>['fetch'];
+  fetch?: EnumData<any>['fetch'];
 }>();
 
 const selectRef = useTemplateRef('selectRef');

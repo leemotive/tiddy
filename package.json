@@ -1,6 +1,6 @@
 {
   "name": "tiddy",
-  "version": "2.3.2",
+  "version": "2.4.0",
   "packageManager": "pnpm@10.11.0",
   "description": "A set of Vue 3 components based on element-plus",
   "type": "module",

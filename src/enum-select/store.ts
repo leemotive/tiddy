@@ -1,17 +1,19 @@
 import { computed, ref, type ComputedRef } from 'vue';
 import { isFunction, isNullOrUndef } from 'yatter';
 
-type OptionItem<T> = { label: string; value: T };
-export type DataOption<T> = {
+type OptionItem<T = any, E = undefined> = E extends undefined
+  ? { label: string; value: T }
+  : { label: string; value: T } & E;
+export type EnumData<T extends OptionItem> = {
   loading: boolean;
-  options: Array<OptionItem<T>>;
-  fetch?: (code: string) => Promise<OptionItem<T>[]>;
+  options: Array<T>;
+  fetch?: (code: string) => Promise<T[]>;
 };
 
-let defaultFetch: DataOption<any>['fetch'];
-const store = ref<Map<string, DataOption<any>>>(new Map());
+let defaultFetch: EnumData<any>['fetch'];
+const store = ref<Map<string, EnumData<any>>>(new Map());
 
-export function getOptions<T>(code: string, fetch?: DataOption<T>['fetch']) {
+export function getOptions<V, E = undefined>(code: string, fetch?: EnumData<OptionItem<V, E>>['fetch']) {
   return computed(() => {
     if (!store.value.has(code)) {
       store.value.set(code, { loading: false, options: [], fetch });
@@ -42,13 +44,20 @@ export function clearEnum(code: string) {
   data.options = [];
 }
 
-export function getEnum<T>(code: string, fetch?: DataOption<T>['fetch']): ComputedRef<OptionItem<T>[]>;
-export function getEnum<T>(
+export function getEnum<V, E = undefined>(
   code: string,
-  value: T,
-  fetch?: DataOption<T>['fetch'],
-): ComputedRef<OptionItem<T> | undefined>;
-export function getEnum<T>(code: string, valueOrFetch?: T | DataOption<T>['fetch'], fetch?: DataOption<T>['fetch']) {
+  fetch?: EnumData<OptionItem<V, E>>['fetch'],
+): ComputedRef<OptionItem<V, E>[]>;
+export function getEnum<V, E = undefined>(
+  code: string,
+  value: V,
+  fetch?: EnumData<OptionItem<V, E>>['fetch'],
+): ComputedRef<OptionItem<V, E> | undefined>;
+export function getEnum<V, E = undefined>(
+  code: string,
+  valueOrFetch?: V | EnumData<OptionItem<V, E>>['fetch'],
+  fetch?: EnumData<OptionItem<V, E>>['fetch'],
+) {
   const value = isFunction(valueOrFetch) ? undefined : valueOrFetch;
   const fetchArg = isFunction(valueOrFetch) ? valueOrFetch : fetch;
   if (isNullOrUndef(value)) {
@@ -67,6 +76,6 @@ export function resetEnum(code: string) {
   fetchOptions(code);
 }
 
-export function setDefaultEnumFetch(fetch: Exclude<DataOption<any>['fetch'], undefined>) {
+export function setDefaultEnumFetch(fetch: Exclude<EnumData<any>['fetch'], undefined>) {
   defaultFetch = fetch;
 }
