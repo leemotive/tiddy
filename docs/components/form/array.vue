@@ -16,26 +16,32 @@
 </template>
 
 <script setup lang="ts">
-import { TdForm, type TdFormFieldProps } from 'tiddy';
+import { TdForm, widget, type TdFormFieldProps } from 'tiddy';
 import { ElInput, ElButton, ElLink } from 'element-plus';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
-const data = ref({});
+const data = ref<{ ratio?: any[] }>({});
 const fields: TdFormFieldProps[] = [
   {
     label: (index: number) => (index < 0 ? '' : `系数${index + 1}`),
     prop: 'ratio',
     type: 'array',
-    fields: [
+    fields: (v) => [
       {
         label: '起始',
         prop: 'start',
-        component: ElInput,
+        ...widget(ElInput, { title: 'html原生属性支持', placeholder: computed(() => v?.end) }),
       },
       {
         label: '结束',
         prop: 'end',
-        component: ElInput,
+        ...widget(
+          ElInput,
+          computed(() => ({
+            title: 'html原生属性支持',
+            clearable: true,
+          })),
+        ),
       },
     ],
   },

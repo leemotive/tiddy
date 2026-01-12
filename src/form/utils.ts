@@ -5,9 +5,11 @@ import type {
   CSSProperties,
   DefineComponent,
   ExtractPublicPropTypes,
+  HTMLAttributes,
   InjectionKey,
   PropType,
   Raw,
+  Ref,
 } from 'vue';
 import type { AnyFunction, GetSlotsFunction, MakeOptional, OrArray, OrFunction, OrRef, SlotDef } from '../types';
 
@@ -19,6 +21,16 @@ const fieldsPropsDef = {
 };
 export type TdFieldsProps = {
   fields: TdFormFieldProps[];
+};
+
+const arrayFieldsPropsDef = {
+  fields: {
+    type: [Array, Function] as PropType<OrFunction<any[]>>,
+    default: () => [],
+  },
+};
+export type TdArrayFieldsProps = {
+  fields: OrFunction<TdFormFieldProps[]>;
 };
 
 const commonFieldPropsDef = {
@@ -157,10 +169,10 @@ export const arrayFieldPropsDef = {
     type: Boolean,
     default: false,
   },
-  ...fieldsPropsDef,
+  ...arrayFieldsPropsDef,
   ...commonFieldPropsDef,
 };
-export type TdArrayFieldProps = TdFieldsProps &
+export type TdArrayFieldProps = TdArrayFieldsProps &
   ExtractPublicPropTypes<typeof arrayFieldPropsDef> &
   AllowedComponentProps;
 
@@ -227,9 +239,11 @@ export const tdformItemProps = {
 
 export type TdFormItemProps = ExtractPublicPropTypes<typeof tdformItemProps> & Partial<FormItemProps>;
 
-type PropsOrRef<T> = {
-  [K in keyof T]?: OrRef<T[K]>;
-};
-export function widget<T>(c: T | Raw<T>, props?: OrRef<PropsOrRef<PropsOf<T>>>) {
+type PropsOrRef<T> =
+  | {
+      [K in keyof T]?: OrRef<T[K]>;
+    }
+  | Ref<T>;
+export function widget<T>(c: T | Raw<T>, props?: PropsOrRef<PropsOf<T> & HTMLAttributes>) {
   return { component: c, widget: props };
 }

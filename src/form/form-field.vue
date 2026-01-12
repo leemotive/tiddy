@@ -9,18 +9,23 @@ import ObjectField from './object-field.vue';
 import WidgetField from './widget-field.vue';
 import ArrayField from './array-field.vue';
 import LayoutField from './layout-field.vue';
-import { isFunction } from 'yatter';
+import { getDeepValue, isFunction } from 'yatter';
+import { formCtxKey, type FormContext } from './utils';
+import { inject } from 'vue';
 
 defineOptions({ inheritAttrs: false });
 
 const attrs = useAttrs();
 const fullProp = computed(() => attrs['full-prop'] || attrs.prop);
+const formCtx = inject<FormContext>(formCtxKey)!;
 
 const fieldAttrs = computed(() => {
   const attr: Record<string, any> = {};
   for (const [k, v] of Object.entries(attrs)) {
     if (k === 'component' && v) {
       attr[k] = markRaw(toRaw(v));
+    } else if (k === 'fields' && isFunction(v) && !attrs.type) {
+      attr[k] = v(getDeepValue(formCtx.model, attrs['full-prop'] as string));
     } else {
       attr[k] = v;
     }
