@@ -123,19 +123,15 @@ export const widgetFieldPropsDef = {
   },
   ...commonFieldPropsDef,
 };
+
 type PropsOf<C> =
-  // .vue SFC and many typed components
-  C extends DefineComponent<infer P, any, any, any, any>
-    ? P
-    : // class-style / constructor components
-      C extends new (
-          ...args: any
-        ) => any
-      ? InstanceType<C> extends { $props: infer P }
+  C extends new (...args: any[]) => any
+    ? InstanceType<C>['$props']
+    : C extends DefineComponent<any, any, any, any, any, any, any, any>
+      ? InstanceType<C> extends {$props: infer P}
         ? P
         : Record<string, any>
-      : // fallback
-        Record<string, any>;
+      : Record<string, any>;
 export type TdWidgetFieldProps = ExtractPublicPropTypes<typeof widgetFieldPropsDef> &
   AllowedComponentProps &
   Record<PropertyKey, any>;

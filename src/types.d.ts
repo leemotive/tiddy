@@ -1,4 +1,4 @@
-import type { Component, Slot } from 'vue';
+import type { Component, Slot, Ref } from 'vue';
 
 export type OrArray<T> = T | T[];
 export type OrFunction<T> = T | ((...args: any[]) => T);
