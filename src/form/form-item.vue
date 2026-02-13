@@ -1,18 +1,21 @@
 <template>
-<ElFormItem ref="formItem" :class="[{'hide-asterisk': hideRequiredAsterisk}]" v-bind="itemAttr" >
+<ElFormItem ref="formItem" :class="[{'hide-asterisk': hideRequiredAsterisk}, 'td-form-item']" v-bind="itemAttr" >
   <template v-for="(_, k) in slots" :key="k" #[k]="scope">
     <slot v-bind="scope" :name="k"></slot>
   </template>
   <template #error="scope">
-    <div :class="validateClass">{{ innerFormatMessage(scope.error) }}</div>
+    <TdDynamicDirective :directives="directives">
+      <div :class="[validateClass, {'td-form-item__error-oneline': errorLayout === 'nowrap'}]">{{ innerFormatMessage(scope.error) }}</div>
+    </TdDynamicDirective>
   </template>
 </ElFormItem>
 </template>
 
 <script setup lang="ts">
 import { ElFormItem, useNamespace, type FormItemInstance } from 'element-plus';
-import { computed, unref, useAttrs, useSlots, useTemplateRef, type Slots } from 'vue';
+import { computed, unref, useAttrs, useSlots, useTemplateRef, type Slots, type ObjectDirective } from 'vue';
 import { formCtxKey, tdformItemProps, type FormContext } from './utils';
+import {TdDynamicDirective} from '../dynamic-directive';
 import { inject } from 'vue';
 
 defineOptions({
@@ -67,9 +70,27 @@ defineExpose(
     },
   ),
 );
+
+function setFormItemMarginBottom(el: HTMLDivElement) {
+  const height = Number.parseFloat(window.getComputedStyle(el).getPropertyValue('height'), 10);
+    const marginBottom = `${Math.max(height + 6, 18)}px`;
+    (el.closest('.td-form-item') as HTMLDivElement).style.marginBottom = marginBottom;
+}
+const vErrorLayout: ObjectDirective = {
+  mounted: setFormItemMarginBottom,
+  updated: setFormItemMarginBottom,
+}
+
+const directives = computed(() => [{dir: vErrorLayout, enable: props.errorLayout === 'expand'}])
 </script>
 
 <style lang="css" scoped>
+.td-form-item {
+  transition: margin-bottom 0.3s;
+}
+.td-form-item__error-oneline {
+  white-space: nowrap;
+}
 
 .el-form-item .el-form-item {
   margin-bottom: 18px;
@@ -83,11 +104,14 @@ defineExpose(
   margin-bottom: 0;
 }
 
+.el-form-item.layout-form-item > :deep(.el-form-item__content) {
+  align-items: flex-start;
+}
+
 .el-form-item.is-required.hide-asterisk.asterisk-left > :deep(.el-form-item__label)::before {
   content: '';
 }
 .el-form-item.is-required.hide-asterisk.asterisk-right > :deep(.el-form-item__label)::after {
   content: '';
 }
-
 </style>

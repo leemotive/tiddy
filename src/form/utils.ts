@@ -231,6 +231,10 @@ export const tdformItemProps = {
     type: Boolean as PropType<boolean>,
     default: false,
   },
+  errorLayout: {
+    type: String as PropType<'nowrap' | 'wrap' | 'expand'>,
+    default: 'wrap',
+  },
 };
 
 export type TdFormItemProps = ExtractPublicPropTypes<typeof tdformItemProps> & Partial<FormItemProps>;

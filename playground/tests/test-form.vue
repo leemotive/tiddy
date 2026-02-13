@@ -119,12 +119,13 @@ const fields: TdFormFieldProps[] = [
         type: 'widget',
         label: '姓名',
         prop: 'name',
+        item: {errorLayout: 'expand'},
         component: markRaw(ElInput),
         slots: {
           name: 'suffix',
           text: 'T',
         },
-        rules: [{ required: true }, { min: 2 }],
+        rules: [{ required: true, message: '这是一个很长很长很长很长的错误信息' }, { min: 2 }],
       },
       {
         type: 'widget',
