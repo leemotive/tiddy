@@ -72,13 +72,16 @@ defineExpose(
 );
 
 function setFormItemMarginBottom(el: HTMLDivElement) {
-  const height = Number.parseFloat(window.getComputedStyle(el).getPropertyValue('height'), 10);
+  const height = Number.parseFloat(window.getComputedStyle(el).getPropertyValue('height'));
     const marginBottom = `${Math.max(height + 6, 18)}px`;
     (el.closest('.td-form-item') as HTMLDivElement).style.marginBottom = marginBottom;
 }
 const vErrorLayout: ObjectDirective = {
   mounted: setFormItemMarginBottom,
   updated: setFormItemMarginBottom,
+  beforeUnmount(el: HTMLDivElement) {
+    (el.closest('.td-form-item') as HTMLDivElement).style.removeProperty('margin-bottom');
+  }
 }
 
 const directives = computed(() => [{dir: vErrorLayout, enable: props.errorLayout === 'expand'}])
