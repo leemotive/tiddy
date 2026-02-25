@@ -91,8 +91,9 @@ const fields: TdFormFieldProps[] = [
     })),
     item: {
       hideRequiredAsterisk: true,
+      errorLayout: 'expand',
     },
-    rules: [{ required: true }],
+    rules: [{ required: true, message: '这是一个非常非常长的错误消息这是一个非常非常长的错误消息这是一个非常非常长的错误消息' }],
     on: {
       blur() {
         console.log('blur');

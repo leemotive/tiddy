@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { ElFormItem, useNamespace, type FormItemInstance } from 'element-plus';
-import { computed, unref, useAttrs, useSlots, useTemplateRef, type Slots, type ObjectDirective } from 'vue';
+import { computed, unref, useAttrs, useSlots, useTemplateRef, onUnmounted, type Slots, type ObjectDirective } from 'vue';
 import { formCtxKey, tdformItemProps, type FormContext } from './utils';
 import {TdDynamicDirective} from '../dynamic-directive';
 import { inject } from 'vue';
@@ -71,20 +71,34 @@ defineExpose(
   ),
 );
 
-function setFormItemMarginBottom(el: HTMLDivElement) {
-  const height = Number.parseFloat(window.getComputedStyle(el).getPropertyValue('height'));
+let lastErrorHeight = 0;
+const observer = new ResizeObserver((entries) => {
+  for (const entry of entries) {
+    if (lastErrorHeight !== entry.contentRect.height) {
+      lastErrorHeight = entry.contentRect.height;
+      setFormItemMarginBottom(entry.target as HTMLDivElement, lastErrorHeight);
+    }
+  }
+});
+function setFormItemMarginBottom(el: HTMLDivElement, height: number) {
     const marginBottom = `${Math.max(height + 6, 18)}px`;
     (el.closest('.td-form-item') as HTMLDivElement).style.marginBottom = marginBottom;
 }
 const vErrorLayout: ObjectDirective = {
-  mounted: setFormItemMarginBottom,
-  updated: setFormItemMarginBottom,
+  mounted(el: HTMLDivElement) {
+    observer.observe(el);
+  },
   beforeUnmount(el: HTMLDivElement) {
+    observer.unobserve(el);
     (el.closest('.td-form-item') as HTMLDivElement).style.removeProperty('margin-bottom');
   }
 }
 
 const directives = computed(() => [{dir: vErrorLayout, enable: props.errorLayout === 'expand'}])
+
+onUnmounted(() => {
+  observer.disconnect();
+});
 </script>
 
 <style lang="css" scoped>
