@@ -86,6 +86,7 @@ function setFormItemMarginBottom(el: HTMLDivElement, height: number) {
 }
 const vErrorLayout: ObjectDirective = {
   mounted(el: HTMLDivElement) {
+    lastErrorHeight = 0;
     observer.observe(el);
   },
   beforeUnmount(el: HTMLDivElement) {
