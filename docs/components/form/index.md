@@ -1,8 +1,9 @@
 # Form
+
 对`ElForm`的二次封装，通过 json 配置生成表单, 支持对象类型和数组类型以及布局类等, 不内置任何输入组件，按需引入，避免打包用不到的组件。
 
 ```ts
-import {TdForm, TdFormField, TdFormItem, type TdFormFieldProps, } from 'tiddy';
+import { TdForm, TdFormField, TdFormItem, type TdFormFieldProps } from "tiddy";
 
 const fields: TdFormFieldProps[] = [];
 ```
@@ -37,42 +38,54 @@ const fields: TdFormFieldProps[] = [];
 | outerEmptyAction | string | - | 在`array`型字段生效，定义在没有数据时的插槽，此时不会显示label |
 | emptyAction | string | - | 在`array`型字段生效，定义在没有数据时的插槽, 此时会显示label |
 | rowAction | string | - | 在`array`型字段生效，定义每一行操作插槽 |
-| rawValue | function |  | 在增加一行时，通过此函数返回行的初始值 |
+| rawValue | function | | 在增加一行时，通过此函数返回行的初始值 |
 | mandatory | boolean | false | 初始化时，是否默认自动插入一条 |
 
 `FormItem` 组件除了支持 `ElFormItem` 的属性外，还支持以下属性：
 | 属性名 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| messageLabel | string \| ComputedRef\<string> | - | 当`FormItem`label没有显示的时候，可以使用这个字段定义表单验证消息中的字段名，在验证消息中优先使用这个字段  |
+| messageLabel | string \| ComputedRef\<string> | - | 当`FormItem`label没有显示的时候，可以使用这个字段定义表单验证消息中的字段名，在验证消息中优先使用这个字段 |
 | formatMessage | function | - | 对错误消息进行格式化，可以在这里引入`i18n`等 |
 | hideRequiredAsterisk | boolean | false | 是否隐藏`required`字段的星号 |
 
-
 ## 基础使用
+
 <demo vue="base.vue" />
 
 ## 对象结构
+
 <demo vue="object.vue" />
 
 ## 数组结构
+
 <demo vue="array.vue" />
 
 ## 数据转换
+
 <demo vue="format.vue" />
 
 ## 布局类
+
 <demo vue="layout.vue" />
 
+## 布局类2
+
+<demo vue="layout-2.vue" />
+
 ## 组件插槽
+
 <demo vue="select.vue" />
 
 ## 字段关联
+
 <demo vue="relation.vue" />
 
 ## 表单验证
+
 <demo vue="rules.vue" />
 
 ## 自定义消息
+
 <demo vue="message.vue" />
 `async-validator` 内置了多种规则，在项目中可以根据需要设置
 ```json
@@ -126,14 +139,16 @@ const fields: TdFormFieldProps[] = [];
 ```
 
 ## 配合vue-i18n
+
 上面的例子中，仅仅是对验证消息进行了单一语言的翻译配置。在多语言项目中，可以通过`formatMessage`属性对错误消息进行格式化，在格式化函数中引入`i18n`等
 
 比如将async-validator内置的验证消息配置成如下格式， 以`required`为例
+
 ```ts
-import Schema from 'async-validator';
+import Schema from "async-validator";
 
 Object.assign(Schema.messages, {
-  required: 'el.errors.messages.required\0%s',
+  required: "el.errors.messages.required\0%s",
 });
 
 TdFormItem.props.formatMessage.default = (message) => {
@@ -141,46 +156,52 @@ TdFormItem.props.formatMessage.default = (message) => {
   // 用\0分割，提取出 key: el.errors.messages.required 和 param: 姓名
   return t(key, param);
 };
-
 ```
+
 这样表单验证时async-validator生成的错误消息就会变成`el.errors.messages.required\0姓名`。这个消息现在是无法直接显示的。此时就需要`formatMessage`属性对错误消息进行格式化，在格式化函数中引入`i18n`等，这样你只需要在i18n配置文件中为`el.errors.messages.required`配置不同的语言即可。
 
 对于多参数的验证类型，比如range，`range: '%s must be between %s and %s in length'`,这里而的参数顺序对于async-validator是固定的，所以如果你需要在`formatMessage`函数中对参数顺序进行调整。最好是把模板定义成 `range: 'el.errors.messages.range\0{"field": "%s", "min": "%s", "max": "%s"}'`，这样在`formatMessage`函数中就可以把参数解析成对象，再调用`i18n`就可以不考虑顺序，而是命名参数了
 
 在多语言环境下 `label` 也是需要支持语言切换的，在以往通常是在模板中使用`<ElFormItem :label="t('m.label.name')"></ElFormItem>`。 而现在通过fileds配置，可以使用`computed`
+
 ```ts
 const fields: TdFormFieldProps[] = [
   {
-    label: computed(() => t('m.label.name')),
-    prop: 'name',
-    component: 'ElInput',
+    label: computed(() => t("m.label.name")),
+    prop: "name",
+    component: "ElInput",
   },
 ];
 ```
 
 ## 组件属性提示
+
 在定义输入域的组件及组件属性时，如果直接写成下面这样，将不会有组件的属性提示
+
 ```ts
 const fields: TdFormFieldProps[] = [
   {
-    label: '姓名',
-    prop: 'name',
+    label: "姓名",
+    prop: "name",
     component: ElInput,
     widget: {
-      placeholder: '请输入姓名',
+      placeholder: "请输入姓名",
     },
   },
 ];
 ```
+
 可以使用widget方法来定义组件并关联属性
+
 ```ts
-import { widget } from 'tiddy';
+import { widget } from "tiddy";
 const fields: TdFormFieldProps[] = [
   {
-    label: '姓名',
-    prop: 'name',
+    label: "姓名",
+    prop: "name",
     ...widget(ElInput, {
-      placeholder: '请输入姓名',
+      placeholder: "请输入姓名",
     }),
   },
 ];
+```

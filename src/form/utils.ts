@@ -146,20 +146,36 @@ export const arrayFieldPropsDef = {
     type: Function as PropType<AnyFunction>,
   },
   outerEmptyAction: {
-    type: String,
+    type: [Array, Object, String] as PropType<OrArray<SlotDef>>,
     default: null,
   },
   emptyAction: {
-    type: String,
+    type: [Array, Object, String] as PropType<OrArray<SlotDef>>,
     default: null,
   },
   rowAction: {
-    type: String,
+    type: [Array, Object, String] as PropType<OrArray<SlotDef>>,
     default: null,
   },
   lineStyle: {
     type: Object as PropType<CSSProperties>,
     default: () => ({}),
+  },
+  item: {
+    type: Object as PropType<OrRef<TdFormItemProps>>,
+    default: () => ({}),
+  },
+  lineClass: {
+    type: String,
+    default: ''
+  },
+  rowFieldClass: {
+    type: String,
+    default: ''
+  },
+  rowActionClass: {
+    type: String,
+    default: ''
   },
   mandatory: {
     type: Boolean,
@@ -177,6 +193,17 @@ export const layoutFieldPropsDef = {
     type: String as PropType<'layout'>,
     default: 'layout',
     required: true as const,
+  },
+  component: {
+    type: [String, Object, Function] as PropType<string | Component | Raw<Component>>,
+  },
+  widget: {
+    type: Object as PropType<Record<string, any>>,
+    default: () => ({}),
+  },
+  on: {
+    type: Object as PropType<Record<string, AnyFunction>>,
+    default: () => ({}),
   },
   slots: {
     type: [Array, Object, String] as PropType<OrArray<SlotDef>>,

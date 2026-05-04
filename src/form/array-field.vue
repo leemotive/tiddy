@@ -5,15 +5,15 @@
   :add="lineAction.add.bind(null, -1)"
   :empty="true"
 />
-<TdFormItem v-else v-bind="labelProps" class="layout-form-item">
+<TdFormItem v-else v-bind="itemAttrs" class="layout-form-item">
   <component
     v-if="EmptySlot && !values.length"
     :is="EmptySlot.component"
     :add="lineAction.add.bind(null, -1)"
     :empty="true"
   />
-  <div v-for="(v, vi) in values" :key="getKey(v)" class="list-row" :style="lineStyle">
-    <div class="row-item">
+  <div v-for="(v, vi) in values" :key="getKey(v)" class="list-row" :class="lineClass" :style="lineStyle">
+    <div class="row-item" :class="rowFieldClass">
       <FormField
         name-space="layout-form-item"
         v-bind="fieldProps"
@@ -25,7 +25,7 @@
         :prop="String(vi)"
       />
     </div>
-    <div class="row-action">
+    <div class="row-action" :class="rowActionClass">
       <component
           v-if="RowSlot"
           :is="RowSlot.component"
@@ -48,7 +48,7 @@
 <script setup lang="ts">
 import TdFormItem from './form-item.vue';
 import { arrayFieldPropsDef, formCtxKey, type FormContext, type Writeable } from './utils';
-import { computed, inject, onMounted, useAttrs } from 'vue';
+import { computed, inject, onMounted, useAttrs, unref } from 'vue';
 import { cut, getDeepValue, isFunction, isNullOrUndef, pick, setDeepValue } from 'yatter';
 import { getKey, resolveSlotNames } from '../utils';
 import FormField from './form-field.vue';
@@ -61,7 +61,7 @@ const attrs = useAttrs();
 
 const fieldProps = computed(() => {
   return {
-    ...cut(props, [(k) => k.endsWith('Action') || ['lineStyle'].includes(k)]),
+    ...cut(props, [(k) => k.endsWith('Action') || k.endsWith('Class') || ['lineStyle', 'item'].includes(k)]),
     ...attrs,
   };
 });
@@ -69,10 +69,10 @@ const fieldProps = computed(() => {
 const formCtx = inject<FormContext>(formCtxKey)!;
 
 const OuterEmptySlot = formCtx.getParentSlots(
-  resolveSlotNames(props.outerEmptyAction ?? `${props.prop}-action_outer`),
+  resolveSlotNames(props.outerEmptyAction, `${props.prop}-action_outer`),
 )[0];
-const EmptySlot = formCtx.getParentSlots(resolveSlotNames(props.emptyAction ?? `${props.prop}-action_empty`))[0];
-const RowSlot = formCtx.getParentSlots(resolveSlotNames(props.rowAction ?? `${props.prop}-action_row`))[0];
+const EmptySlot = formCtx.getParentSlots(resolveSlotNames(props.emptyAction, `${props.prop}-action_empty`))[0];
+const RowSlot = formCtx.getParentSlots(resolveSlotNames(props.rowAction, `${props.prop}-action_row`))[0];
 
 const parentFullProp = computed(() => (attrs['full-prop'] as string) || '');
 
@@ -90,6 +90,11 @@ const labelProps = computed<any>(() => {
   p.labelPosition = indexProp(p.labelPosition, -1);
   return p;
 });
+
+const itemAttrs = computed(() => {
+  const entries = Object.entries(unref(props.item)).map(([k,v]) => [k, unref(v)])
+  return Object.assign({}, Object.fromEntries(entries), labelProps.value);
+})
 
 function indexProp(v: OrFunction<any>, index: number, value?: any) {
   if (isFunction(v)) {
