@@ -10,7 +10,7 @@ export function getSlotsFactory(slots: Slots): GetSlotsFunction {
         if (slot) {
           return [
             {
-              name: name.replace(/[\w-]+?_/, ''),
+              name: name.replace(/[\w-]+?_?/, ''),
               component: slot,
               slot: true,
             },
@@ -24,7 +24,7 @@ export function getSlotsFactory(slots: Slots): GetSlotsFunction {
           if (name.test(slotName)) {
             return [
               {
-                name: slotName.replace(/[\w-]+?_/, ''),
+                name: slotName.replace(/[\w-]+?_?/, ''),
                 component: slots[slotName],
                 slot: true,
               }
@@ -38,7 +38,7 @@ export function getSlotsFactory(slots: Slots): GetSlotsFunction {
 }
 
 export function resolveSlotNames(names: any, prop?: string, type?: string) {
-  const propReg = prop ? new RegExp(`^${toKebabCase([prop, type].filter(Boolean).join('-'))}_`) : undefined;
+  const propReg = prop ? new RegExp(`^${toKebabCase([prop, type].filter(Boolean).join('-'))}(_|$)`) : undefined;
   return ensureArray(names ?? propReg);
 }
 

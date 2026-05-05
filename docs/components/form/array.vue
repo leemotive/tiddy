@@ -1,10 +1,10 @@
 <template>
   <TdForm :fields="fields" :model="data" label-width="80">
-    <template #ratio-action_outer="scope">
+    <template #ratio-action-outer="scope">
       <ElButton plain @click="scope.add">增加系数配置</ElButton>
     </template>
 
-    <template #ratio-action_row="scope">
+    <template #ratio-action-row="scope">
       <div class="action">
         <ElLink underline="never" plain @click="scope.add">➕</ElLink>
         <ElLink underline="never" plain @click="scope.remove">➖</ElLink>

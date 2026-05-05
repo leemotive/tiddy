@@ -145,6 +145,10 @@ export const arrayFieldPropsDef = {
   rawValue: {
     type: Function as PropType<AnyFunction>,
   },
+  slotProp: {
+    type: String,
+    required: false as const,
+  },
   outerEmptyAction: {
     type: [Array, Object, String] as PropType<OrArray<SlotDef>>,
     default: null,

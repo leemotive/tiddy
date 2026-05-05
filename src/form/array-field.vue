@@ -69,10 +69,10 @@ const fieldProps = computed(() => {
 const formCtx = inject<FormContext>(formCtxKey)!;
 
 const OuterEmptySlot = formCtx.getParentSlots(
-  resolveSlotNames(props.outerEmptyAction, `${props.prop}-action_outer`),
+  resolveSlotNames(props.outerEmptyAction, `${props.prop || props.slotProp}-action-outer`),
 )[0];
-const EmptySlot = formCtx.getParentSlots(resolveSlotNames(props.emptyAction, `${props.prop}-action_empty`))[0];
-const RowSlot = formCtx.getParentSlots(resolveSlotNames(props.rowAction, `${props.prop}-action_row`))[0];
+const EmptySlot = formCtx.getParentSlots(resolveSlotNames(props.emptyAction, `${props.prop || props.slotProp}-action-empty`))[0];
+const RowSlot = formCtx.getParentSlots(resolveSlotNames(props.rowAction, `${props.prop || props.slotProp}-action-row`))[0];
 
 const parentFullProp = computed(() => (attrs['full-prop'] as string) || '');
 
