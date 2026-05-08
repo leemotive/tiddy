@@ -73,7 +73,6 @@ const columns: TdTableColumnProps[] = [
   {
     prop: 'status',
     label: '状态',
-    slots: 'status_default',
   },
 ];
 </script>

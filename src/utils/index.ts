@@ -10,7 +10,7 @@ export function getSlotsFactory(slots: Slots): GetSlotsFunction {
         if (slot) {
           return [
             {
-              name: name.replace(/[\w-]+?_?/, ''),
+              name: name.replace(/[^_]+_?/, ''),
               component: slot,
               slot: true,
             },
@@ -24,7 +24,7 @@ export function getSlotsFactory(slots: Slots): GetSlotsFunction {
           if (name.test(slotName)) {
             return [
               {
-                name: slotName.replace(/[\w-]+?_?/, ''),
+                name: slotName.replace(/[^_]+_?/, ''),
                 component: slots[slotName],
                 slot: true,
               }
