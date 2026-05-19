@@ -1,5 +1,5 @@
 <template>
-  <TdForm ref="formRef" :fields="fields" :model="model" label-width="120">
+  <TdForm ref="formRef" :fields="fields" :model="model" label-width="120" size="large">
     <template #prefix><div style="white-space: pre;">{{ model }}</div></template>
     <template #contacts-action_empty="scope">
       <ElButton type="primary" @click="scope.add">添加联系人</ElButton>

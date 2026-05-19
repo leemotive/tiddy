@@ -1,5 +1,5 @@
 <template>
-<ElFormItem ref="formItem" :class="[{'hide-asterisk': hideRequiredAsterisk}, 'td-form-item']" v-bind="itemAttr" >
+<ElFormItem ref="formItem" :class="[{'hide-asterisk': hideRequiredAsterisk}, 'td-form-item']" v-bind="itemAttr" :style="cssVars">
   <template v-for="(_, k) in slots" :key="k" #[k]="scope">
     <slot v-bind="scope" :name="k"></slot>
   </template>
@@ -13,10 +13,11 @@
 
 <script setup lang="ts">
 import { ElFormItem, useNamespace, type FormItemInstance } from 'element-plus';
-import { computed, unref, useAttrs, useSlots, useTemplateRef, onUnmounted, type Slots, type ObjectDirective } from 'vue';
+import { computed, unref, useAttrs, useSlots, useTemplateRef, onUnmounted, type Slots, type ObjectDirective, ref, onMounted } from 'vue';
 import { formCtxKey, tdformItemProps, type FormContext } from './utils';
 import {TdDynamicDirective} from '../dynamic-directive';
 import { inject } from 'vue';
+import { toCssVars } from 'yatter';
 
 defineOptions({
   inheritAttrs: false,
@@ -72,6 +73,8 @@ defineExpose(
 );
 
 let lastErrorHeight = 0;
+const initMarginBottom = ref(18);
+const cssVars = computed(() => toCssVars({nestFormItemMarginBottom: `${initMarginBottom.value}px`})); 
 const observer = new ResizeObserver((entries) => {
   for (const entry of entries) {
     if (lastErrorHeight !== entry.contentRect.height) {
@@ -81,7 +84,7 @@ const observer = new ResizeObserver((entries) => {
   }
 });
 function setFormItemMarginBottom(el: HTMLDivElement, height: number) {
-    const marginBottom = `${Math.max(height + 6, 18)}px`;
+    const marginBottom = `${Math.max(height + 6, initMarginBottom.value)}px`;
     (el.closest('.td-form-item') as HTMLDivElement).style.marginBottom = marginBottom;
 }
 const vErrorLayout: ObjectDirective = {
@@ -100,6 +103,9 @@ const directives = computed(() => [{dir: vErrorLayout, enable: props.errorLayout
 onUnmounted(() => {
   observer.disconnect();
 });
+onMounted(() => {
+  initMarginBottom.value = formItemRef.value!.$el.classList.contains('el-form-item--large') ? 22 : 18;
+})
 </script>
 
 <style lang="css" scoped>
@@ -111,7 +117,7 @@ onUnmounted(() => {
 }
 
 .el-form-item .el-form-item {
-  margin-bottom: 18px;
+  margin-bottom: var(--nest-form-item-margin-bottom, 18px);
 }
 
 .el-form-item:not(.layout-form-item) .el-form-item {
